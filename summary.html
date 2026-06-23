@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>AX 프로 강의내용 전파 완료 보고 (요약)</title>
+<style>
+  :root{
+    --accent:#C10933;
+    --accent-soft:#FBE9ED;
+    --text:#1f2330;
+    --sub:#5a6071;
+    --line:#e7e9ef;
+    --bg:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;width:100%;background:var(--bg);color:var(--text);
+    font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',
+                -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    overflow:hidden;-webkit-font-smoothing:antialiased;}
+  .deck{position:relative;width:100vw;height:100vh;}
+  .slide{
+    position:absolute;inset:0;
+    padding:40px 56px 64px 56px;
+    display:flex;flex-direction:column;
+    opacity:0;transform:translateX(30px);
+    transition:opacity .4s ease, transform .4s ease;
+    pointer-events:none;background:var(--bg);
+  }
+  .slide.active{opacity:1;transform:translateX(0);pointer-events:auto;}
+
+  /* ===== COVER ===== */
+  .cover{justify-content:center;align-items:flex-start;padding:0 88px;}
+  .cover .eyebrow{
+    display:inline-block;background:var(--accent);color:#fff;
+    padding:6px 14px;font-size:13px;letter-spacing:.18em;font-weight:700;
+    border-radius:2px;margin-bottom:28px;
+  }
+  .cover h1{font-size:62px;font-weight:800;letter-spacing:-.03em;line-height:1.15;}
+  .cover h1 .accent{color:var(--accent);}
+  .cover .meta{margin-top:42px;color:var(--sub);font-size:16px;line-height:1.9;}
+  .cover .meta strong{color:var(--text);font-weight:700;}
+  .cover .accent-bar{width:120px;height:6px;background:var(--accent);margin-top:36px;}
+
+  /* ===== CONTENT SLIDE (DENSE) ===== */
+  .top-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:10px;border-bottom:3px solid var(--accent);
+    margin-bottom:14px;flex-shrink:0;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .dot{width:12px;height:12px;background:var(--accent);border-radius:2px;}
+  .brand .label{font-size:12px;letter-spacing:.12em;color:var(--sub);font-weight:700;}
+  .pageno{font-size:12px;color:var(--sub);letter-spacing:.08em;}
+
+  .title-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;flex-shrink:0;}
+  h1.title{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;}
+  h1.title .accent{color:var(--accent);}
+  .subtitle{font-size:12px;color:var(--sub);}
+
+  /* Master grid: pack everything */
+  .master{
+    flex:1;
+    display:grid;
+    grid-template-columns: 1.05fr 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    grid-template-areas:
+      "A B B"
+      "A C C"
+      "D D E";
+    gap:10px;
+    min-height:0;
+  }
+  .box{
+    border:1px solid var(--line);border-radius:6px;
+    padding:12px 14px;display:flex;flex-direction:column;min-height:0;
+    background:#fff;
+  }
+  .box .hd{
+    display:flex;align-items:center;gap:8px;margin-bottom:8px;
+    padding-bottom:6px;border-bottom:1px dashed var(--line);
+  }
+  .box .hd .ix{
+    font-size:10px;font-weight:800;color:#fff;background:var(--accent);
+    padding:2px 7px;border-radius:2px;letter-spacing:.1em;
+  }
+  .box .hd h3{font-size:14px;font-weight:800;letter-spacing:-.01em;}
+
+  /* A: 운영개요 + KPI */
+  .area-A{grid-area:A;}
+  .info-grid{
+    display:grid;grid-template-columns:72px 1fr;
+    border-top:2px solid var(--text);font-size:12px;
+  }
+  .info-grid > div{padding:6px 8px;border-bottom:1px solid var(--line);line-height:1.4;}
+  .info-grid .k{background:#fafafa;font-weight:700;color:var(--text);}
+  .info-grid .v{color:var(--sub);}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;}
+  .kpi{
+    background:var(--accent-soft);border:1px solid #f3d4dc;border-radius:5px;
+    padding:8px 8px;display:flex;flex-direction:column;align-items:center;
+    text-align:center;
+  }
+  .kpi .label{font-size:9px;color:var(--accent);font-weight:800;letter-spacing:.1em;}
+  .kpi .value{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1.1;margin-top:2px;}
+  .kpi .value small{font-size:10px;color:var(--sub);font-weight:600;}
+  .kpi .desc{font-size:10px;color:var(--sub);margin-top:2px;}
+
+  /* B: 강의 내용 (1x4) */
+  .area-B{grid-area:B;}
+  .mod-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;min-height:0;}
+  .mod{
+    border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;
+    min-height:0;
+  }
+  .mod .num{font-size:9px;color:var(--accent);font-weight:800;letter-spacing:.12em;}
+  .mod h4{font-size:12px;font-weight:800;margin:3px 0 5px 0;line-height:1.25;}
+  .mod ul{padding-left:14px;}
+  .mod li{font-size:11px;color:var(--sub);line-height:1.45;margin-bottom:1px;}
+
+  /* C: 성과 + 피드백 */
+  .area-C{grid-area:C;}
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1;min-height:0;}
+  .pn{
+    border:1px solid var(--line);border-radius:5px;padding:9px 12px;
+    display:flex;flex-direction:column;min-height:0;
+  }
+  .pn.success{border-top:3px solid var(--accent);}
+  .pn.fb{border-top:3px solid #2c3344;}
+  .pn .tt{font-size:12px;font-weight:800;display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+  .pn .tag{font-size:9px;padding:2px 6px;border-radius:2px;letter-spacing:.08em;font-weight:700;}
+  .pn.success .tag{background:var(--accent);color:#fff;}
+  .pn.fb .tag{background:#2c3344;color:#fff;}
+  .pn ul{padding-left:16px;}
+  .pn li{font-size:11.5px;color:var(--sub);line-height:1.5;margin-bottom:2px;}
+  .pn li b{color:var(--text);font-weight:700;}
+
+  /* D: 향후 계획 (timeline) */
+  .area-D{grid-area:D;}
+  .tl{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1;min-height:0;}
+  .step{padding:10px 10px 8px 10px;border-top:3px solid var(--accent);position:relative;background:#fafbfd;border-radius:0 0 4px 4px;}
+  .step::before{
+    content:"";position:absolute;top:-7px;left:10px;width:10px;height:10px;
+    background:#fff;border:2px solid var(--accent);border-radius:50%;
+  }
+  .step .phase{font-size:10px;color:var(--accent);font-weight:800;letter-spacing:.1em;}
+  .step h5{font-size:12px;margin:3px 0 4px 0;font-weight:800;}
+  .step p{font-size:11px;color:var(--sub);line-height:1.45;}
+
+  /* E: 협조요청 / 요약 */
+  .area-E{grid-area:E;}
+  .req{
+    background:var(--accent);color:#fff;border-radius:6px;padding:12px 14px;
+    height:100%;display:flex;flex-direction:column;justify-content:center;
+  }
+  .req .lbl{font-size:10px;letter-spacing:.18em;font-weight:800;opacity:.85;}
+  .req h4{font-size:14px;font-weight:800;margin:4px 0 6px 0;}
+  .req p{font-size:11.5px;line-height:1.55;opacity:.95;}
+
+  /* ===== NAV / FOOTER ===== */
+  .footer{
+    position:fixed;left:0;right:0;bottom:0;height:44px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 28px;font-size:11px;color:var(--sub);
+    border-top:1px solid var(--line);background:#fff;
+  }
+  .progress{
+    position:fixed;left:0;top:0;height:4px;background:var(--accent);
+    width:0%;transition:width .35s ease;z-index:20;
+  }
+  .dots{display:flex;gap:8px;}
+  .dots .d{
+    width:8px;height:8px;border-radius:50%;background:#d8dbe3;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .dots .d.on{background:var(--accent);width:22px;border-radius:4px;}
+  .nav-hint kbd{
+    border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;
+    padding:1px 6px;font-size:10px;margin:0 2px;background:#fafafa;
+  }
+
+  @media (max-width:1280px){
+    .slide{padding:28px 36px 56px 36px;}
+    h1.title{font-size:22px;}
+    .cover h1{font-size:46px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- ===== Slide 1 : Cover ===== -->
+  <section class="slide cover active">
+    <div style="width:100%;">
+      <span class="eyebrow">INTERNAL REPORT · 2026</span>
+      <h1>AX 프로 대상<br><span class="accent">강의내용 전파</span> 완료 보고</h1>
+      <div class="accent-bar"></div>
+      <div class="meta">
+        <div><strong>보고일</strong> &nbsp;|&nbsp; 2026. 06. 23 (월)</div>
+        <div><strong>작성</strong> &nbsp;&nbsp;&nbsp;|&nbsp; CC&amp;S전략팀 · 오현민 선임</div>
+        <div><strong>보고처</strong> &nbsp;|&nbsp; 고객가치혁신 CC&amp;S전략담당</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Slide 2 : Dense Summary ===== -->
+  <section class="slide">
+    <div class="top-bar">
+      <div class="brand"><div class="dot"></div><div class="label">SUMMARY · ONE-PAGER</div></div>
+      <div class="pageno">02 / 02</div>
+    </div>
+
+    <div class="title-row">
+      <h1 class="title">AX 프로 <span class="accent">강의내용 전파</span> 결과 요약</h1>
+      <div class="subtitle">2026.06.23 (월) 13:00~17:00 · 참석 23명 · Copilot 활용 실습형 강의</div>
+    </div>
+
+    <div class="master">
+
+      <!-- A : 운영개요 + KPI -->
+      <div class="box area-A">
+        <div class="hd"><span class="ix">A</span><h3>운영 개요</h3></div>
+        <div class="info-grid">
+          <div class="k">일 시</div><div class="v">2026. 06. 23 (월) 13:00 ~ 17:00 (4H)</div>
+          <div class="k">장 소</div><div class="v">본사 교육장 (온라인 병행)</div>
+          <div class="k">대 상</div><div class="v">AX 프로 인증자</div>
+          <div class="k">참 석</div><div class="v">총 23명 (참석률 100%)</div>
+          <div class="k">진행방식</div><div class="v">Copilot 활용 시연 + 실습형</div>
+          <div class="k">강 사</div><div class="v">CC&amp;S전략팀 · 오현민 선임</div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi">
+            <span class="label">참석</span>
+            <span class="value">23<small> 명</small></span>
+            <span class="desc">전원 참석</span>
+          </div>
+          <div class="kpi">
+            <span class="label">시간</span>
+            <span class="value">4<small> H</small></span>
+            <span class="desc">집중 진행</span>
+          </div>
+          <div class="kpi">
+            <span class="label">만족도</span>
+            <span class="value">4.6<small>/5</small></span>
+            <span class="desc">사후 설문</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- B : 강의 내용 -->
+      <div class="box area-B">
+        <div class="hd"><span class="ix">B</span><h3>주요 강의 내용 (4 Module)</h3></div>
+        <div class="mod-grid">
+          <div class="mod">
+            <span class="num">M01</span>
+            <h4>Copilot 기본기능</h4>
+            <ul><li>구성·동작 원리</li><li>프롬프트 원칙</li><li>보안 가이드</li></ul>
+          </div>
+          <div class="mod">
+            <span class="num">M02</span>
+            <h4>업무 활용 사례</h4>
+            <ul><li>문서 요약</li><li>회의록 작성</li><li>메일 초안</li></ul>
+          </div>
+          <div class="mod">
+            <span class="num">M03</span>
+            <h4>실습 세션</h4>
+            <ul><li>실 업무 적용</li><li>프롬프트 개선</li><li>결과물 공유</li></ul>
+          </div>
+          <div class="mod">
+            <span class="num">M04</span>
+            <h4>Q&amp;A · 토론</h4>
+            <ul><li>현업 이슈</li><li>활용 팁 공유</li><li>후속 가이드</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- C : 성과 + 피드백 -->
+      <div class="box area-C">
+        <div class="hd"><span class="ix">C</span><h3>주요 성과 &amp; 참석자 피드백</h3></div>
+        <div class="twocol">
+          <div class="pn success">
+            <div class="tt">성과 <span class="tag">RESULT</span></div>
+            <ul>
+              <li><b>전원 참석</b> 달성 (23/23, 100%)</li>
+              <li>실무 <b>즉시 적용</b> 가능 수준 학습 완료</li>
+              <li>부서별 <b>1차 전파자 23명</b> 풀(Pool) 확보</li>
+              <li>실습 완료율 <b>96%</b></li>
+            </ul>
+          </div>
+          <div class="pn fb">
+            <div class="tt">피드백 <span class="tag">VOICE</span></div>
+            <ul>
+              <li><b>[긍정]</b> 사례 기반 시연, 실습시간 충분</li>
+              <li><b>[긍정]</b> 강사 답변이 구체적·현업 친화적</li>
+              <li><b>[개선]</b> 프롬프트 심화 과정 신설 요청</li>
+              <li><b>[개선]</b> 직무별(영업·기획·R&amp;D) 사례 추가</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- D : 향후 계획 -->
+      <div class="box area-D">
+        <div class="hd"><span class="ix">D</span><h3>향후 계획 — 전파 → 정착 → 확산</h3></div>
+        <div class="tl">
+          <div class="step">
+            <span class="phase">PHASE 1 · 7월</span>
+            <h5>심화 교육 운영</h5>
+            <p>프롬프트 심화 / 직무별 특화 모듈 신설</p>
+          </div>
+          <div class="step">
+            <span class="phase">PHASE 2 · 8월</span>
+            <h5>실무 적용 지원</h5>
+            <p>참석자 1:1 컨설팅 · Use Case 발굴</p>
+          </div>
+          <div class="step">
+            <span class="phase">PHASE 3 · 9월</span>
+            <h5>사례 공유회</h5>
+            <p>우수 활용 사례 발표 · Best Practice 정립</p>
+          </div>
+          <div class="step">
+            <span class="phase">PHASE 4 · 4Q</span>
+            <h5>전사 확산</h5>
+            <p>23명 → 부서 전파 → 전사 표준화</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- E : 협조 요청 -->
+      <div class="area-E">
+        <div class="req">
+          <span class="lbl">REQUEST · 협조 요청</span>
+          <h4>부서별 활용 현황 점검 &amp; 우수 사례 공유</h4>
+          <p>AX 프로 23명의 부서 내 전파 활동이 가속화될 수 있도록,
+             정기 점검 및 우수 사례 발굴에 적극적인 협조를 부탁드립니다.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">
+  <div>© 2026 CC&amp;S전략팀 · AX 프로 강의내용 전파 완료 보고 (요약본)</div>
+  <div class="dots" id="dots"></div>
+  <div class="nav-hint">NAVIGATE &nbsp; <kbd>←</kbd><kbd>→</kbd> &nbsp; <kbd>Space</kbd></div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const dotsWrap = document.getElementById('dots');
+  const progress = document.getElementById('progress');
+  let idx = 0;
+
+  slides.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'd' + (i===0?' on':'');
+    d.addEventListener('click',()=>go(i));
+    dotsWrap.appendChild(d);
+  });
+  const dots = dotsWrap.querySelectorAll('.d');
+
+  function render(){
+    slides.forEach((s,i)=>s.classList.toggle('active', i===idx));
+    dots.forEach((d,i)=>d.classList.toggle('on', i===idx));
+    progress.style.width = ((idx+1)/total*100) + '%';
+  }
+  function go(i){ idx = Math.max(0, Math.min(total-1, i)); render(); }
+  function next(){ go(idx+1); }
+  function prev(){ go(idx-1); }
+
+  document.addEventListener('keydown', (e)=>{
+    if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ go(0); }
+    else if(e.key==='End'){ go(total-1); }
+  });
+
+  document.getElementById('deck').addEventListener('click',(e)=>{
+    const w = window.innerWidth;
+    if(e.clientX < w*0.30) prev();
+    else if(e.clientX > w*0.70) next();
+  });
+
+  render();
+</script>
+</body>
+</html>
