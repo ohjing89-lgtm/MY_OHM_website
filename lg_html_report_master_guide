@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini HTML 보고서 제작 실전 마스터 가이드 (20대 핵심 기술)</title>
+    <!-- Tailwind CSS 탑재 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lgred: {
+                            50: '#FFF0F2',
+                            100: '#FFE1E5',
+                            500: '#C30D23', /* LG Signature Red */
+                            600: '#A3071B',
+                            700: '#820513',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background-color: #ffffff !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- 글로벌 헤더 -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-lgred-500 flex items-center justify-center text-white font-black text-xl shadow-md shadow-lgred-100">R</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-950 flex items-center gap-2">
+                        HTML 실무 보고서 <span class="text-lgred-500">20대 인터랙티브 스킬</span> 마스터 가이드
+                    </h1>
+                    <p class="text-xs text-slate-500">임직원을 위한 2분할 대조형 시각화, 레이아웃 전환, 연산 및 유틸리티 종합 가이드</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 text-sm">
+                <span class="px-3 py-1 bg-lgred-50 text-lgred-500 rounded-full font-semibold border border-lgred-100">실전 20대 스펙 스킬</span>
+                <span class="text-slate-400">|</span>
+                <span class="text-slate-600 font-medium">한 화면 2개 동시 대조 뷰</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 레이아웃 분할 -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- 좌측 사이드바: 20대 보고 스킬 리스트 -->
+        <aside class="lg:col-span-3 flex flex-col gap-4 no-print h-[calc(100vh-140px)] sticky top-[92px] overflow-y-auto pr-1">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="text-xs font-bold text-slate-400 tracking-wider uppercase mb-4">전체 20가지 스킬 빠른 탐색</h2>
+                <div class="space-y-1" id="skill-list-container">
+                    <!-- 스킬 리스트 20종이 자바스크립트로 동적 렌더링됨 -->
+                </div>
+            </div>
+
+            <!-- 미니 도움말 보드 -->
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-lgred-500 rounded-full opacity-20 blur-xl"></div>
+                <h3 class="font-bold text-sm mb-1.5 relative z-10"><i class="fa-regular fa-lightbulb text-lgred-100 mr-2"></i>더블 캔버스 학습법</h3>
+                <p class="text-[11px] text-slate-300 leading-relaxed relative z-10">
+                    우측 대시보드에는 **상시 2개의 스킬**이 좌우로 배치됩니다. 각각의 프롬프트와 설계 요점을 비교하며 원하는 카드를 즉시 복사하여 사용하세요.
+                </p>
+            </div>
+        </aside>
+
+        <!-- 우측 메인 콘텐츠 영역 (2분할 카드 그리드) -->
+        <section class="lg:col-span-9 flex flex-col gap-6">
+            
+            <!-- 현재 페이지 및 탐색 헤더 -->
+            <div class="bg-white px-6 py-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4 no-print">
+                <div class="flex items-center gap-4">
+                    <span id="current-page-badge" class="w-12 h-12 rounded-xl bg-lgred-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">1</span>
+                    <div>
+                        <span class="text-xs text-lgred-500 font-bold">CURRENT DISPLAY PAGE</span>
+                        <h3 class="text-base font-bold text-slate-900" id="current-page-title">스킬 복합 탐색 대시보드</h3>
+                    </div>
+                </div>
+                <!-- 페이지네이션 제어 (총 10페이지, 페이지당 2개) -->
+                <div class="flex items-center gap-2">
+                    <button onclick="navigatePage(-1)" class="p-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer" title="이전">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <span class="text-xs font-semibold text-slate-500 px-2" id="page-progress">PAGE 1 / 10</span>
+                    <button onclick="navigatePage(1)" class="p-2 border border-slate-200 rounded-lg bg-white hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer" title="다음">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 두 개의 스킬 카드가 활성화되는 그리드 공간 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="double-panel-container">
+                <!-- 스킬 카드 두 개가 동적으로 인젝션됨 -->
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- 하단 푸터 -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 no-print">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <p>© 2026 LG Active Red Style HTML Interactive Workshop Kit.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-lgred-500 transition-colors">기획 가이드 원칙</a>
+                <a href="#" class="hover:text-lgred-500 transition-colors">임직원 피드백 채널</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 토스트 메시지 알림 -->
+    <div id="toast-message" class="fixed bottom-6 right-6 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl border border-slate-800 flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50">
+        <i class="fa-solid fa-circle-check text-green-400"></i>
+        <span id="toast-text">복사되었습니다!</span>
+    </div>
+
+    <script>
+        // 20대 보고 스킬 정의
+        const REPORT_SKILLS_DATA = [
+            {
+                id: 1,
+                badge: "01",
+                category: "Navigation & Layout",
+                title: "탭 전환형 멀티 페이지 구성",
+                desc: "페이지 리로드 없이 가상 슬라이드 탭을 토글하여 다단계 보고서를 한 화면에 슬림하게 정렬하는 전이 기법",
+                prompt: `임직원 인공지능 교육 현황 보고서 웹앱을 만들어줘. 화면 상단에 '전체 개요', '상세 분석', '향후 계획'이라는 3가지 탭 버튼을 설계하고, 클릭 시 리로드 없이 본문 영역이 자바스크립트로 숨겨지거나 나타나게 코딩해줘. 배경은 화이트, 포인트 컬러는 LG 시그니처 레드(#C30D23)를 매치해줘.`,
+                secrets: [
+                    "<b>클래스 제어로 가상 슬라이드 구현:</b> 각 탭의 컨텐츠를 <code>div</code>로 감싸고 <code>hidden</code> 클래스를 토글 처리하여 가볍게 페이지를 전환합니다.",
+                    "<b>포커스 뱃지 트랜지션:</b> 활성화된 탭의 하단 보더나 글자 색상을 포인트 컬러로 즉각 변경하여 직관적인 네비게이션을 만듭니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-4">
+                            <div class="flex border-b border-slate-200">
+                                <button onclick="s1_switchTab('ov')" id="s1-btn-ov" class="s1-tab px-3 py-1.5 border-b-2 border-lgred-500 text-xs font-bold text-lgred-500">1. 개요</button>
+                                <button onclick="s1_switchTab('det')" id="s1-btn-det" class="s1-tab px-3 py-1.5 border-b-2 border-transparent text-xs font-medium text-slate-500 hover:text-slate-800">2. 분석</button>
+                                <button onclick="s1_switchTab('plan')" id="s1-btn-plan" class="s1-tab px-3 py-1.5 border-b-2 border-transparent text-xs font-medium text-slate-500 hover:text-slate-800">3. 계획</button>
+                            </div>
+                            <div class="p-3.5 bg-slate-50 rounded-xl min-h-[120px] text-[11px] text-slate-600 leading-relaxed">
+                                <div id="s1-page-ov" class="s1-page space-y-1">
+                                    <h4 class="font-bold text-slate-900 text-xs">[전체 개요] 전사 디지털 전환 교육</h4>
+                                    <p>생성형 AI의 사내 도입을 가속화하고 임직원의 프롬프트 디자인 역량을 글로벌 최고 수준으로 확보하기 위한 집중 워크숍 체제 수립 보고입니다.</p>
+                                </div>
+                                <div id="s1-page-det" class="s1-page hidden space-y-1">
+                                    <h4 class="font-bold text-slate-900 text-xs">[상세 분석] 직군별 요구 니즈</h4>
+                                    <p>인사/기획 부서는 '기안서 자동화 및 요약 프로세스'를, 개발/품질 부문은 '소스 검수 및 API 연동 실습'을 각각 최고 우선순위 항목으로 선정했습니다.</p>
+                                </div>
+                                <div id="s1-page-plan" class="s1-page hidden space-y-1">
+                                    <h4 class="font-bold text-slate-900 text-xs">[향후 계획] 마일스톤 로드맵</h4>
+                                    <p>1단계: 캔버스 가이드 배포 (3분기) -> 2단계: 자동화 해커톤 연계 및 부서 전담 코치 임명식 개최 (4분기)</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 2,
+                badge: "02",
+                category: "Interactive Layout",
+                title: "아코디언식 상세 분석 접기/펼치기",
+                desc: "공간을 절약하고 보고서 가독성을 극대화하기 위해, 핵심 타이틀 클릭 시 세부 답변이 부드럽게 슬라이딩되어 노출되는 서랍장형 레이아웃",
+                prompt: `보고서 가독성을 높이기 위한 '접고 펼치는 인터랙티브 아코디언'을 HTML 단일 코드로 구축해줘. '마일스톤 1', '마일스톤 2' 헤더를 클릭할 때마다 자바스크립트를 이용해 서랍처럼 부드러운 애니메이션과 함께 세부 답변이 노출되게 해주고, LG 레드 컬러로 예쁘게 연출해줘.`,
+                secrets: [
+                    "<b>Max-Height CSS 트랜지션:</b> 숨겨진 영역의 <code>max-height</code>를 <code>0px</code>에서 <code>200px</code> 등으로 변경해 부드러운 전개를 얻어냅니다.",
+                    "<b>회전 Chevron 결합:</b> 클릭에 매칭하여 아이콘에 <code>rotate-180</code>을 주입해 시각적인 동작감을 완성합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2">
+                            <div class="border border-slate-200 rounded-lg overflow-hidden bg-white text-xs">
+                                <button onclick="s2_toggle(1)" class="w-full p-2.5 flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors font-bold text-slate-800">
+                                    <span>[단계 1] 생성형 AI 전사 샌드박스 망 구축</span>
+                                    <i id="s2-icon-1" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                                </button>
+                                <div id="s2-content-1" class="transition-all duration-300 max-h-0 overflow-hidden">
+                                    <div class="p-3 text-[11px] text-slate-600 border-t border-slate-100 leading-normal bg-white">
+                                        임직원이 외부 유출 우려 없이 안전하게 기업 내부 데이터를 검색 및 기안에 활용할 수 있도록 보안이 보강된 전용 서버망 구동이 시작되었습니다.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border border-slate-200 rounded-lg overflow-hidden bg-white text-xs">
+                                <button onclick="s2_toggle(2)" class="w-full p-2.5 flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors font-bold text-slate-800">
+                                    <span>[단계 2] 비개발 실무자 가속 캔버스 워크북</span>
+                                    <i id="s2-icon-2" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                                </button>
+                                <div id="s2-content-2" class="transition-all duration-300 max-h-0 overflow-hidden">
+                                    <div class="p-3 text-[11px] text-slate-600 border-t border-slate-100 leading-normal bg-white">
+                                        본 캔버스 가이드를 바탕으로 실전 UI 구성 및 원클릭 복사를 응용해 경영 기획/보고 퍼블리싱 가속화를 달성하고 있습니다.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 3,
+                badge: "03",
+                category: "Data Visualization",
+                title: "정밀 SVG 원형 도넛 차트",
+                desc: "외부 차트 라이브러리 플러그인 연결 없이, 순수 SVG 그래픽 마스크 문법을 통해 구현한 인터랙티브 도넛 그래프",
+                prompt: `외부 차트 라이브러리(Chart.js 등) 없이 순수 HTML SVG 태그와 stroke-dashoffset 수식을 이용해 마우스 호버 시 실시간 중앙 텍스트가 변경되는 도넛 차트를 설계해줘. LG 레드로 시각적 포인트를 더해줘.`,
+                secrets: [
+                    "<b>반지름 계산 공식:</b> 원 둘레 <code>2 * π * r</code>을 기반으로 <code>stroke-dasharray</code>를 확보하고, 수치 비율만큼 오프셋을 공제해 구현합니다.",
+                    "<b>중앙 텍스트 연동:</b> 각 SVG 파트에 마우스를 올릴 때 JS를 기동해 도넛 정중앙의 라벨을 세부 데이터 정보로 고쳐서 가독성을 높입니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full text-center space-y-3">
+                            <div class="relative w-36 h-36 mx-auto">
+                                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" stroke="#F1F5F9" stroke-width="12" fill="none" />
+                                    <circle cx="50" cy="50" r="40" stroke="#C30D23" stroke-width="12" fill="none" 
+                                            stroke-dasharray="251.2" stroke-dashoffset="100.48" class="transition-all duration-300 cursor-pointer hover:stroke-lgred-700"
+                                            onmouseenter="s3_update('기획/영업', '60%', '제안서 자동 요약 업무용')" onmouseleave="s3_reset()" />
+                                    <circle cx="50" cy="50" r="40" stroke="#FDA4AF" stroke-width="12" fill="none" 
+                                            stroke-dasharray="251.2" stroke-dashoffset="200.96" class="transition-all duration-300 cursor-pointer hover:stroke-lgred-300"
+                                            onmouseenter="s3_update('연구/개발', '40%', '코드 리뷰 & 보안검증용')" onmouseleave="s3_reset()" />
+                                </svg>
+                                <div class="absolute inset-0 flex flex-col justify-center items-center pointer-events-none">
+                                    <span class="text-xl font-black text-slate-950" id="s3-dn-pct">100%</span>
+                                    <span class="text-[9px] font-bold text-slate-400" id="s3-dn-lbl">전체 사용</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded-xl text-left min-h-[45px]">
+                                <p class="text-[10px] text-slate-600" id="s3-dn-desc">그래프 각 세그먼트에 마우스를 올려 상세 활용처를 탐색하세요.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 4,
+                badge: "04",
+                category: "Data Visualization",
+                title: "다차원 SVG 다이나믹 막대 그래프",
+                desc: "수치 배열이 동적으로 변할 때 막대 너비가 부드럽게 슬라이딩하며 한눈에 대조 변화를 강조하는 막대 차트",
+                prompt: `부서별 주간 평균 AI 절감 공수 막대그래프를 HTML로 구현해줘. 수치 업데이트 단추를 주어 자바스크립트로 막대 그래프 너비가 매끄럽게 늘어났다 줄어드는 연출 효과를 추가해주고, LG 레드로 마감해줘.`,
+                secrets: [
+                    "<b>상대적 백분율 변환:</b> 입력된 값 중 최대값(Max)을 찾아내어 각 수치를 최장 막대(<code>100%</code>) 기준의 상대적 비율 너비로 대입합니다.",
+                    "<b>Tailwind Transition 결합:</b> <code>transition-all duration-500</code>을 바에 지정하면 데이터 바인딩 시 스무스한 슬라이딩 연출을 발산합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] font-bold text-slate-800">부서별 주간 절감 공수 (시간)</span>
+                                <button onclick="s4_shuffle()" class="bg-white hover:bg-slate-50 border border-slate-200 text-[9px] font-bold px-2 py-0.5 rounded transition-all">수치 갱신</button>
+                            </div>
+                            <div class="space-y-2 bg-slate-50 p-3 rounded-xl text-[10px]">
+                                <div>
+                                    <div class="flex justify-between mb-0.5 text-slate-600"><span>엔지니어링 팀</span><span class="font-bold text-slate-900" id="s4-lbl-0">150 h</span></div>
+                                    <div class="w-full h-2 bg-slate-200 rounded-full"><div id="s4-bar-0" class="h-full bg-lgred-500 rounded-full transition-all duration-500" style="width: 85%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-0.5 text-slate-600"><span>상품 기획 팀</span><span class="font-bold text-slate-900" id="s4-lbl-1">90 h</span></div>
+                                    <div class="w-full h-2 bg-slate-200 rounded-full"><div id="s4-bar-1" class="h-full bg-lgred-300 rounded-full transition-all duration-500" style="width: 55%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-0.5 text-slate-600"><span>인사/지원 부문</span><span class="font-bold text-slate-900" id="s4-lbl-2">45 h</span></div>
+                                    <div class="w-full h-2 bg-slate-200 rounded-full"><div id="s4-bar-2" class="h-full bg-slate-400 rounded-full transition-all duration-500" style="width: 25%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 5,
+                badge: "05",
+                category: "Interactive Matrix",
+                title: "전략 분석용 2x2 사분면 매트릭스",
+                desc: "경영 및 과제 우선순위 수립 시 필수적인 Gartner 매직 쿼드런트/BCG 형태의 정교한 좌표 기반 포지셔닝 평면",
+                prompt: `가로축(실행 난이도)과 세로축(비즈니스 가치)으로 정의되는 2x2 그리드 매트릭스를 그리고 위에 원형 노드 점들을 뿌려줘. 특정 과제 원형 점을 클릭하면 상세 설명 카드가 하단에 실시간으로 표시되도록 조율해줘.`,
+                secrets: [
+                    "<b>상대 비율 배치:</b> 부모 그리드 영역을 <code>relative</code>로 잡고 각 점을 <code>top: Y%</code>, <code>left: X%</code> 로 설정해 완벽한 평면 내 포지셔닝을 실현합니다.",
+                    "<b>클릭 링 펄스 애니메이션:</b> 클릭 시 현재 활성 노드에 <code>ring-4</code> 혹은 <code>animate-pulse</code>를 추가해 해당 타겟 정보를 강조합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-3">
+                            <div class="relative w-full aspect-square max-w-[180px] mx-auto border border-slate-300 bg-white rounded-xl">
+                                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-dashed border-slate-200"></div></div>
+                                <div class="absolute inset-0 flex justify-center"><div class="h-full border-l border-dashed border-slate-200"></div></div>
+                                
+                                <span class="absolute top-1 left-1 text-[7px] text-slate-400">Quick Win</span>
+                                <span class="absolute top-1 right-1 text-[7px] text-slate-400">Strategic</span>
+                                
+                                <div onclick="s5_select('node-a', 'RAG 지식 인출기', '가치: 상 / 구현: 하', '전사 사내 가이드 검색용 Quick Win.')"
+                                     id="s5-node-a" class="s5-node absolute w-4 h-4 rounded-full bg-lgred-500 text-white flex items-center justify-center text-[8px] font-bold cursor-pointer transition-all hover:scale-125" style="top: 25%; left: 30%;">A</div>
+                                <div onclick="s5_select('node-b', '자동 초안 작성 에이전트', '가치: 최상 / 구현: 상', '보고서 자동화를 이끄는 고부가가치 과제.')"
+                                     id="s5-node-b" class="s5-node absolute w-4 h-4 rounded-full bg-slate-800 text-white flex items-center justify-center text-[8px] font-bold cursor-pointer transition-all hover:scale-125" style="top: 15%; left: 70%;">B</div>
+                            </div>
+                            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 min-h-[55px]" id="s5-box">
+                                <p class="text-[10px] text-slate-500">위의 사분면 좌표 점(A, B)을 클릭해 상세 보고 코멘트를 읽으십시오.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 6,
+                badge: "06",
+                category: "Interactive Color Theme",
+                title: "실시간 보고서 컬러 테마 변경기",
+                desc: "기획서 내에서 원클릭으로 메인 강조 배너, 활성 라인 등의 스타일링 색상을 즉시 변경해 상황별 톤앤매너를 제어하는 테마 스위처",
+                prompt: `보고서 웹앱 내부에서 'LG 레드', '블루', '그린' 3가지의 조그만 색상칩 버튼을 제공하고 이를 클릭하면 전체 주요 기획서 블록의 테두리와 포인트 글꼴 색이 일제히 매끄럽게 교체되는 코드를 짜줘.`,
+                secrets: [
+                    "<b>CSS Custom Property 활용:</b> 메인 엘리먼트에 인라인 스타일 변수(<code>--theme-color</code>)를 지정한 뒤, 스크립트에서 이를 바꾸어 하위 요소들이 동시 계승되도록 제어합니다.",
+                    "<b>클래스 일괄 변경 회피:</b> 수많은 엘리먼트의 클래스를 루프로 바꾸는 것보다 상위 CSS 변수 주입 방식이 훨씬 속도가 빠르고 버그가 적습니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-3 text-center" id="s6-wrapper" style="--s6-color: #C30D23; --s6-bg: #FFF0F2;">
+                            <div class="flex gap-2 justify-center">
+                                <button onclick="s6_theme('#C30D23','#FFF0F2')" class="w-5 h-5 rounded-full bg-lgred-500 cursor-pointer"></button>
+                                <button onclick="s6_theme('#1D4ED8','#EFF6FF')" class="w-5 h-5 rounded-full bg-blue-600 cursor-pointer"></button>
+                                <button onclick="s6_theme('#047857','#ECFDF5')" class="w-5 h-5 rounded-full bg-emerald-600 cursor-pointer"></button>
+                            </div>
+                            <div class="p-3 rounded-xl border transition-all duration-300 text-left" id="s6-card" style="border-color: var(--s6-color); background-color: var(--s6-bg)">
+                                <h5 class="text-xs font-black text-slate-900">사내 인공지능 윤리 실천 규약</h5>
+                                <p class="text-[10px] text-slate-600 mt-1 leading-relaxed">상단의 미니 컬러 칩 단추를 클릭하면 본 텍스트 상자의 기획 하이라이트 칼라가 동적으로 스무스하게 변경됩니다.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 7,
+                badge: "07",
+                category: "Interactive Simulation",
+                title: "정밀 데이터 요약 게이지 계측기",
+                desc: "속도계 바늘 형태의 SVG 아크형 게이지를 조절하여, 전사 목표 달성도나 성과 지표를 역동적으로 어필하는 KPI 대시보드",
+                prompt: `SVG 반원형 궤적을 이용해 0%부터 100%까지의 달성 수치를 속도계처럼 나타내는 게이지 위젯을 작성해줘. 30%, 75%, 100%라는 제어 버튼을 클릭하면 원호가 자연스럽게 이동해 마운트되게 해줘.`,
+                secrets: [
+                    "<b>Stroke Dashoffset의 반원 환산:</b> 원주율 기준 반폭인 <code>125.6</code> 길이의 아크를 선언하고, 백분율 역산 수식을 바인딩해 아크 길이를 직접 움직입니다.",
+                    "<b>실시간 숫자 카운터:</b> 호가 연장되는 속도에 맞춰 숫자 텍스트가 점진적으로 가중 표기되도록 JS 인터벌 타이머를 가미하면 퀄리티가 높아집니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full text-center space-y-3">
+                            <div class="relative w-36 h-20 mx-auto overflow-hidden">
+                                <svg class="w-full h-full" viewBox="0 0 100 50">
+                                    <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round" />
+                                    <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#C30D23" stroke-width="10" stroke-linecap="round"
+                                          stroke-dasharray="125.6" stroke-dashoffset="125.6" id="s7-arc" class="transition-all duration-700" />
+                                </svg>
+                                <div class="absolute bottom-0 inset-x-0">
+                                    <span class="text-lg font-black text-slate-900" id="s7-val">0%</span>
+                                </div>
+                            </div>
+                            <div class="flex gap-1.5 justify-center text-[9px]">
+                                <button onclick="s7_set(30)" class="bg-white border border-slate-200 px-1.5 py-0.5 rounded cursor-pointer">30%</button>
+                                <button onclick="s7_set(75)" class="bg-white border border-slate-200 px-1.5 py-0.5 rounded cursor-pointer">75%</button>
+                                <button onclick="s7_set(100)" class="bg-white border border-slate-200 px-1.5 py-0.5 rounded cursor-pointer">100%</button>
+                            </div>
+                        </div>
+                    `;
+                    setTimeout(() => s7_set(75), 200);
+                }
+            },
+            {
+                id: 8,
+                badge: "08",
+                category: "Interactive Layout",
+                title: "보고서 내장형 상세 모달 팝업",
+                desc: "메인 장표의 불필요한 시각 방해를 완벽 차단하고, 핵심 세부 수칙이나 기밀 조항만 클릭 시 전체 오버레이로 띄우는 프리미엄 모달",
+                prompt: `버튼을 클릭하면 어두운 배경 오버레이와 함께 정밀한 모달 카드창이 중앙에 자연스러운 스케일업 효과로 뜨도록 바닐라 자바스크립트로 구성해줘. 닫기 기능도 예외 처리하여 단단히 매핑해줘.`,
+                secrets: [
+                    "<b>Backdrop 클릭 제어:</b> 모달 내부 카드 영역이 아닌 바깥 어두운 영역을 눌러도 자연스럽게 닫히도록 <code>event.target</code> 검증을 결합합니다.",
+                    "<b>Scale & Opacity 조율:</b> <code>scale-95 opacity-0</code>에서 <code>scale-100 opacity-100</code>의 서서히 커지는 효과를 연출해 역동성을 불어넣습니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full text-center py-2">
+                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-left max-w-[240px] mx-auto space-y-2">
+                                <h5 class="text-[11px] font-black text-slate-900 leading-normal">전사 사내 데이터 유출 규정</h5>
+                                <button onclick="s8_open()" class="w-full bg-lgred-500 hover:bg-lgred-600 text-white font-bold py-1 rounded text-[10px] transition-colors cursor-pointer">규정 상세 조항 열기</button>
+                            </div>
+                            
+                            <!-- 모달 본체 레이어 -->
+                            <div id="s8-modal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4 hidden" onclick="s8_close(event)">
+                                <div class="bg-white rounded-2xl max-w-xs w-full p-4 text-left shadow-2xl border border-slate-200 transform scale-95 transition-all duration-300" id="s8-card">
+                                    <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                                        <h5 class="text-xs font-bold text-slate-900"><i class="fa-solid fa-triangle-exclamation text-lgred-500 mr-1"></i> 사내 보안 서약서</h5>
+                                        <button onclick="s8_close(event, true)" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                                    <p class="py-2.5 text-[10px] text-slate-500 leading-relaxed">
+                                        사용자는 회사 자산으로 개발된 보고서 데이터 및 사내 기안 요약 프로세스를 임의의 외부 상용 모델에 일괄 누출해서는 안 되며, 보안망을 필수로 준수해야 합니다.
+                                    </p>
+                                    <button onclick="s8_close(event, true)" class="w-full bg-slate-900 text-white font-bold py-1.5 rounded text-[10px] cursor-pointer">동의 및 닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 9,
+                badge: "09",
+                category: "Interactive Simulation",
+                title: "전후 대비 양방향 데이터 슬라이더",
+                desc: "수평 레인지 슬라이더의 눈금 변화에 맞춰, 이전(Before)과 이후(After)의 영역 너비를 실시간으로 교차 변화시키는 비교 분석 위젯",
+                prompt: `AI 도입 이전(Before)과 이후(After)를 비교할 수 있는 슬라이더(range input) 구조를 짜줘. 슬라이더를 우측으로 조절할수록 After 영역의 크기가 부드럽게 늘어나며 효율화 성과 텍스트가 인출되는 구조로 코딩해줘.`,
+                secrets: [
+                    "<b>Flex 기반 너비 배정:</b> 슬라이더 값 <code>value</code>를 가져와서 좌측 상자는 <code>(100 - value)%</code>, 우측 상자는 <code>value%</code> 만큼의 width를 dynamic하게 대입합니다.",
+                    "<b>조건부 임팩트 가동:</b> 슬라이더 수치 값이 극단적인 한계치(예: 80% 이상)에 진입할 경우 성과 부스트 선언 팝업을 동적으로 노출해 성취감을 선사합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-3">
+                            <input type="range" id="s9-slider" min="0" max="100" value="50" oninput="s9_calc()" class="w-full accent-lgred-500 cursor-pointer" />
+                            <div class="flex bg-slate-100 rounded-xl p-1 gap-1 text-center font-bold text-[9px]">
+                                <div id="s9-before" class="bg-slate-300 p-2 rounded text-slate-700 transition-all duration-100" style="width: 50%;">
+                                    <span>Before</span>
+                                    <span class="block text-xs font-black" id="s9-val-before">4.5h</span>
+                                </div>
+                                <div id="s9-after" class="bg-lgred-100 p-2 rounded text-lgred-500 transition-all duration-100" style="width: 50%;">
+                                    <span>After</span>
+                                    <span class="block text-xs font-black" id="s9-val-after">0.5h</span>
+                                </div>
+                            </div>
+                            <div id="s9-banner" class="bg-emerald-50 text-emerald-800 p-1.5 rounded-lg border border-emerald-200 text-[9px] text-center hidden">
+                                <strong>혁신 가속:</strong> 업무 속도가 9배 가량 단축되었습니다!
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 10,
+                badge: "10",
+                category: "Utility & Export",
+                title: "인쇄 및 PDF 파일 저장 최적화",
+                desc: "오프라인 종이 배포 및 사내 PDF 저장 버튼 클릭 시, 화면 상의 복사 버튼/사이드바 등 방해물을 자동 소거하는 리포팅 드라이버",
+                prompt: `인쇄 및 PDF 저장 단추를 만들어주고 브라우저 기본 window.print()를 안전하게 매핑해줘. 미디어 쿼리 @media print 설정을 부여해 인쇄 기동 시 웹페이지의 제어부들은 안 보이게 하고 알맹이만 출력되게 설계해줘.`,
+                secrets: [
+                    "<b>no-print 범용 클래스 정의:</b> 인쇄 화면에서 날려버려야 할 사이드바, 헤더, 각종 조작 버튼 묶음에 <code>no-print</code>를 바인딩하여 <code>display: none !important</code>로 통제합니다.",
+                    "<b>A4 최적 너비 배치:</b> 인쇄 모드 시 감싸는 카드 베젤의 테두리와 그림자를 생략하고 너비를 full로 펴서 용지 잘림 현상을 사전 예방합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full text-center space-y-3">
+                            <div class="p-3 bg-white border border-slate-200 rounded-xl text-left max-w-[240px] mx-auto space-y-1 relative" id="s10-target">
+                                <span class="absolute top-1.5 right-1.5 text-[8px] font-bold text-slate-400 border border-slate-100 px-1 rounded">PDF 대응</span>
+                                <h5 class="text-xs font-black text-slate-900"><i class="fa-solid fa-file-pdf text-lgred-500 mr-1"></i> 종합 성과 보고서</h5>
+                                <p class="text-[9px] text-slate-500 leading-normal">본 영역은 실제 인쇄 기동 시 사이드바를 빼고 순수 기획서 구조로만 깔끔하게 레이아웃이 가변되어 종이에 출력됩니다.</p>
+                            </div>
+                            <button onclick="window.print()" class="bg-lgred-500 hover:bg-lgred-600 text-white font-bold px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5 mx-auto transition-colors cursor-pointer">
+                                <i class="fa-solid fa-print"></i> 이 카드 PDF 저장/인쇄하기
+                            </button>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 11,
+                badge: "11",
+                category: "Navigation & Layout",
+                title: "인터랙티브 마일스톤 타임라인",
+                desc: "로드맵 전개에 탁월한 연대기식 전개도로, 마일스톤 노드를 터치할 때마다 하단 상세 기획 텍스트가 변하는 정보 정렬 패턴",
+                prompt: `로드맵이나 분기 마일스톤 발표를 위한 '타임라인 로드맵 컴포넌트'를 가로축으로 그려줘. 1분기, 2분기, 3분기 노드를 마우스로 선택할 때마다 하단 세부 추진안 대시보드가 다이나믹하게 바뀌게 코딩해줘.`,
+                secrets: [
+                    "<b>수평선 및 연결 세그먼트:</b> 라인을 <code>border-t-2</code>로 잡고 각 이벤트를 균등 비율 간격으로 둥글게 배치해 연대기 가시성을 확보합니다.",
+                    "<b>다차원 카드 피드백:</b> 선택된 상태를 식별할 수 있도록 타겟 동그라미에 LG Signature 레드를 결합하여 완성도를 높입니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-3.5">
+                            <div class="relative flex justify-between items-center px-4">
+                                <div class="absolute left-4 right-4 h-0.5 bg-slate-200 top-1/2 -translate-y-1/2 -z-10"></div>
+                                <button onclick="s11_step(1, '2026 Q1: 데이터 인프라 준비', '전사 데이터 레이크 구축 및 유출 차단을 위한 보안 샌드박스 보안망 설정 완료.')" 
+                                        id="s11-btn-1" class="s11-node w-7 h-7 rounded-full bg-lgred-500 text-white text-[10px] font-bold flex items-center justify-center cursor-pointer transition-all">Q1</button>
+                                <button onclick="s11_step(2, '2026 Q2: 파일럿 워크숍 전개', '현업 부서 15개 팀을 선발하여 실전 HTML 가이드 배포 및 캔버스 코칭 진행.')" 
+                                        id="s11-btn-2" class="s11-node w-7 h-7 rounded-full bg-slate-300 text-slate-600 text-[10px] font-bold flex items-center justify-center cursor-pointer transition-all">Q2</button>
+                                <button onclick="s11_step(3, '2026 Q3: DX 전사 배포 완료', '전사 자동화 마스터 보드 개통 및 성과 경진 대회를 통한 실가치 도출.')" 
+                                        id="s11-btn-3" class="s11-node w-7 h-7 rounded-full bg-slate-300 text-slate-600 text-[10px] font-bold flex items-center justify-center cursor-pointer transition-all">Q3</button>
+                            </div>
+                            <div class="bg-slate-50 p-2.5 rounded-xl min-h-[50px] text-left">
+                                <h5 class="text-[10px] font-bold text-lgred-500" id="s11-title">2026 Q1: 데이터 인프라 준비</h5>
+                                <p class="text-[9px] text-slate-500 mt-0.5 leading-normal" id="s11-desc">전사 데이터 레이크 구축 및 유출 차단을 위한 보안 샌드박스 보안망 설정 완료.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 12,
+                badge: "12",
+                category: "Interactive Layout",
+                title: "실시간 초고속 검색 필터 테이블",
+                desc: "수동 검색 없이 입력창에 텍스트를 입력하는 즉시, 사내 데이터 테이블 행(Row)들이 즉시 정렬 필터링되는 자동 탐색 테이블",
+                prompt: `실시간 대량 데이터 탐색을 지원하는 '검색 필터 탑재 테이블'을 HTML 단일 가이드로 개발해줘. 상단 인풋 상자에 모델명(예: GPT, Gemini)을 기입하는 즉시 아래 테이블에서 해당하는 정보들만 걸러져 나오도록 로직을 작성해줘.`,
+                secrets: [
+                    "<b>텍스트 매칭 루프:</b> 사용자가 입력한 타이핑 값을 <code>toLowerCase()</code> 변환 후 테이블의 각 셀 내용물과 대조하여 다르면 <code>display = 'none'</code> 처리합니다.",
+                    "<b>실시간 감지 인풋 바인딩:</b> <code>keyup</code> 이벤트 대신 <code>input</code> 이벤트를 사용하여 모바일 자판 입력이나 붙여넣기 시에도 즉시 걸러지도록 정밀 구성합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2">
+                            <input type="text" id="s12-search" oninput="s12_filter()" placeholder="모델명 검색 (예: Gemini, GPT)..." 
+                                   class="w-full px-2.5 py-1 text-[10px] border border-slate-200 rounded-lg focus:outline-none focus:border-lgred-500" />
+                            <div class="overflow-x-auto rounded-lg border border-slate-100 max-h-[105px] overflow-y-auto">
+                                <table class="w-full text-left text-[9px] border-collapse bg-white">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-500 border-b border-slate-100">
+                                            <th class="p-1.5 font-bold">모델명</th>
+                                            <th class="p-1.5 font-bold">인코딩 속도</th>
+                                            <th class="p-1.5 font-bold">비고</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="s12-tbody">
+                                        <tr class="border-b border-slate-100 text-slate-700">
+                                            <td class="p-1.5 font-bold text-slate-900">Gemini 1.5 Pro</td>
+                                            <td class="p-1.5">초당 12,000 토큰</td>
+                                            <td class="p-1.5 text-lgred-500">사내 샌드박스 탑재</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-100 text-slate-700">
+                                            <td class="p-1.5 font-bold text-slate-900">GPT-4o Mini</td>
+                                            <td class="p-1.5">초당 15,400 토큰</td>
+                                            <td class="p-1.5 text-slate-400">범용 요약</td>
+                                        </tr>
+                                        <tr class="border-b border-slate-100 text-slate-700">
+                                            <td class="p-1.5 font-bold text-slate-900">Claude 3.5 Sonnet</td>
+                                            <td class="p-1.5">초당 9,200 토큰</td>
+                                            <td class="p-1.5 text-slate-400">정밀 코드 작성</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 13,
+                badge: "13",
+                category: "Navigation & Layout",
+                title: "스크롤 감지 플로팅 TOC & 바",
+                desc: "방대한 량의 긴 기획 문서를 정독할 때 현재 스크롤 진행률을 상단 바에 표기하고, 좌측 가상 TOC가 알아서 활성화되는 시스템",
+                prompt: `긴 분량의 서술형 보고서 스크롤 편의를 위해 '미니 가상 스크롤 영역 및 TOC 연동 패널'을 만들어줘. 내부 박스 스크롤을 내릴 때 상단 스크롤바가 충전되고 현재 어느 장을 읽는지 목록 텍스트에 하이라이트가 옮겨붙도록 코딩해줘.`,
+                secrets: [
+                    "<b>스크롤 오프셋 연계 비율 연산:</b> 스크롤 영역의 <code>scrollTop / (scrollHeight - clientHeight)</code> 비율을 퍼센트로 환산해 게이지바 폭에 주입합니다.",
+                    "<b>Intersection Observer 혹은 수동 비교:</b> 각 소섹션 엘리먼트의 상대 top 값을 계산하여, 기준 영역을 돌파할 때마다 대응 목록의 상태 클래스를 동적으로 변경시킵니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2">
+                            <!-- 스크롤 진행바 -->
+                            <div class="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="s13-bar" class="h-full bg-lgred-500 transition-all duration-100" style="width: 0%"></div>
+                            </div>
+                            <div class="grid grid-cols-12 gap-2">
+                                <!-- 미니 목차 -->
+                                <div class="col-span-4 text-[8px] font-bold space-y-1 text-slate-400">
+                                    <div id="s13-toc-1" class="text-lgred-500 border-l border-lgred-500 pl-1">I. 총 서두</div>
+                                    <div id="s13-toc-2" class="border-l border-transparent pl-1">II. 본론 진척</div>
+                                    <div id="s13-toc-3" class="border-l border-transparent pl-1">III. 결론 요약</div>
+                                </div>
+                                <!-- 가상 스크롤 콘텐트 박스 -->
+                                <div onscroll="s13_scroll(this)" class="col-span-8 bg-slate-50 p-2 rounded-lg text-[9px] text-slate-600 max-h-[85px] overflow-y-auto space-y-4">
+                                    <div id="s13-sec-1">
+                                        <strong class="text-slate-900 block font-bold">I. 총 서두</strong>
+                                        <p class="leading-normal">본 영역은 스크롤 데모 전초 기지입니다. 아래로 끝까지 마우스를 스크롤하면 상단의 프로그레스바가 자동으로 충전되는 동작을 즉각 감상하실 수 있습니다.</p>
+                                    </div>
+                                    <div id="s13-sec-2">
+                                        <strong class="text-slate-900 block font-bold">II. 본론 진척</strong>
+                                        <p class="leading-normal">실제 코딩 과정에서 다차원 스크롤 감지는 복잡해 보이지만, 본 캔버스 템플릿의 자바스크립트 스크롤 이벤트를 재활용하면 복잡함 없이 즉각 적용 가능합니다.</p>
+                                    </div>
+                                    <div id="s13-sec-3">
+                                        <strong class="text-slate-900 block font-bold">III. 결론 요약</strong>
+                                        <p class="leading-normal">최적화 가이드 수립을 축하합니다. 종이 보고에서 디지털 동적 대시보드로 넘어가는 핵심 첫 걸음이 완성되었습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 14,
+                badge: "14",
+                category: "Interactive Layout",
+                title: "카드 우선순위/비용 정렬 정렬기",
+                desc: "경영진 의사결정 속도를 높이기 위해, 중요도/비용 등 옵션을 누르면 카드가 재배열되는 자바스크립트 정렬 엔진",
+                prompt: `의사 결정 촉진용 '전략 과제 카드 정렬 필터'를 HTML 단일 파일로 코딩해줘. 상단에 '우선순위순', '비용 저렴한순' 단추를 만들고, 클릭 시 아래의 과제 카드 배열이 0.3초 애니메이션과 함께 위치를 바꾸게 로직을 구현해줘.`,
+                secrets: [
+                    "<b>JS Array.sort() 연산:</b> 데이터 세트를 가지고 정렬 키값 기준으로 정렬한 뒤 부모 컨테이너의 <code>innerHTML</code>을 다시 뿌려주는 안전한 기교입니다.",
+                    "<b>임시 데이터 템플릿:</b> 배열 내 객체들에 고유 점수값을 내장시킨 뒤 정렬 기준에 맞게 대입하면 아주 정직하게 동작합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2">
+                            <div class="flex gap-1 justify-center text-[9px]">
+                                <button onclick="s14_sort('prio')" class="bg-white border border-slate-200 px-2 py-0.5 rounded cursor-pointer hover:bg-slate-50 font-bold text-slate-700">우선순위 순</button>
+                                <button onclick="s14_sort('cost')" class="bg-white border border-slate-200 px-2 py-0.5 rounded cursor-pointer hover:bg-slate-50 font-bold text-slate-700">투자비용 낮은 순</button>
+                            </div>
+                            <div id="s14-grid" class="grid grid-cols-2 gap-2 text-[9px]">
+                                <!-- 동적 렌더링 카드들 -->
+                            </div>
+                        </div>
+                    `;
+                    s14_sort('prio');
+                }
+            },
+            {
+                id: 15,
+                badge: "15",
+                category: "Data Visualization",
+                title: "동적 전환 리더보드/랭킹 보드",
+                desc: "성과 지수를 실시간 대조하여 1등부터 순위를 시각적으로 매핑하고 상호작용으로 가시 점수를 변경하는 리더보드",
+                prompt: `사내 AI 툴 도입 우수 부서 '실시간 리더보드 랭킹 컴포넌트'를 HTML로 구현해줘. 순위별로 카드 박스를 세로로 쌓고, 임의의 부서 점수를 갱신하면 자등 순위 교환이 일어나는 스무스한 로직을 구성해줘.`,
+                secrets: [
+                    "<b>순위 자동 번호 매김:</b> 정렬 연산 후 인덱스(<code>index + 1</code>)를 등수 딱지로 주입하여 데이터 순번 불일치 오류를 막습니다.",
+                    "<b>그라데이션 등극 뱃지:</b> 1, 2, 3위 등수 뱃지에는 골드/실버/LG Signature 레드를 차등 부여해 입체감을 강화합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2">
+                            <div class="flex justify-between items-center text-[10px]">
+                                <span class="font-bold text-slate-800">사내 AI 전환 부서 랭킹</span>
+                                <button onclick="s15_boost()" class="bg-lgred-50 hover:bg-lgred-100 text-lgred-500 border border-lgred-100 px-1.5 py-0.5 rounded text-[8px] font-bold">임의 부서 성과 가속</button>
+                            </div>
+                            <div id="s15-board" class="space-y-1.5 text-[9px]">
+                                <!-- 동적 랭킹 행들 -->
+                            </div>
+                        </div>
+                    `;
+                    s15_render();
+                }
+            },
+            {
+                id: 16,
+                badge: "16",
+                category: "Interactive Simulation",
+                title: "ROI 실시간 자동 정산 계산기",
+                desc: "임직원 수 및 주당 수동 업무 단축 예상치를 기입하는 즉시 사내 연간 환산 ROI 절감 비용을 동적으로 도출하는 미니 연산기",
+                prompt: `임직원의 생성형 AI 도입 후 성과 기획을 위한 '연간 가치 정산 ROI 계산기'를 HTML 코드로 작성해줘. 인원수, 시간당 단가를 입력하면 자바스크립트로 연간 가치액이 즉시 정산되게 만들어줘.`,
+                secrets: [
+                    "<b>실시간 연산 바인딩:</b> 인풋 상자의 <code>input</code> 감지 시 함수를 연동해 수식(<code>인원수 * 시간 * 52주 * 단가</code>)을 대입합니다.",
+                    "<b>toLocaleString 단위 콤마 처리:</b> 결과 수치 값에 <code>Number.prototype.toLocaleString()</code>을 지정해 3자리 천 단위 구분 쉼표를 찍어 가독성을 높입니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[9px]">
+                            <h5 class="font-bold text-slate-800 text-center mb-1">우리 부서 연간 AI 도입 ROI 절감액</h5>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-slate-500 mb-0.5">교육 대상자 (명)</label>
+                                    <input type="number" id="s16-head" value="45" oninput="s16_calc()" class="w-full px-1.5 py-0.5 border border-slate-200 rounded focus:border-lgred-500" />
+                                </div>
+                                <div>
+                                    <label class="block text-slate-500 mb-0.5">인당 주간 절감시간 (h)</label>
+                                    <input type="number" id="s16-hours" value="4" oninput="s16_calc()" class="w-full px-1.5 py-0.5 border border-slate-200 rounded focus:border-lgred-500" />
+                                </div>
+                            </div>
+                            <div class="border-t border-slate-200 pt-2 text-center">
+                                <span class="text-slate-400 block text-[8px] uppercase font-bold tracking-widest">연간 환산 절감 성과 가치</span>
+                                <span id="s16-total" class="text-sm font-black text-lgred-500">₩ 28,080,000</span>
+                                <span class="block text-[8px] text-slate-400 mt-0.5">(기준 단가 시간당 ₩3,000 적용)</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 17,
+                badge: "17",
+                category: "Interactive Simulation",
+                title: "원형 마일스톤 체크 달성률",
+                desc: "다단계 진행 항목 체크박스를 터치해 선택 완료할 때마다, SVG 완벽 원형 게이지가 부드럽게 증가하여 피드백을 완료하는 도구",
+                prompt: `보고서 내에 '체크리스트 기반 원형 진척도 게이지'를 HTML로 구현해줘. 3가지 과제 체크박스를 체크하거나 풀 때마다, 오른쪽의 둥근 프로그레스 서클 게이지의 각도가 동적으로 채워지는 코드를 설계해줘.`,
+                secrets: [
+                    "<b>수량 상대 연산:</b> 체크박스의 <code>checked === true</code> 갯수를 분수로 환산해 원형 호의 오프셋을 역량 조절합니다.",
+                    "<b>중앙 엠블럼 변화:</b> 전체 과제가 전부 완수되면 체크 서클 내부 색상이 에메랄드 등으로 변하며 성공 축하 기조를 표출합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full grid grid-cols-12 gap-2 items-center text-[10px]">
+                            <div class="col-span-7 space-y-1.5 text-left text-[9px]">
+                                <label class="flex items-center gap-1.5 cursor-pointer text-slate-700">
+                                    <input type="checkbox" checked id="s17-c1" onchange="s17_update()" class="accent-lgred-500" />
+                                    <span>[기초] Gemini 가이드 정독</span>
+                                </label>
+                                <label class="flex items-center gap-1.5 cursor-pointer text-slate-700">
+                                    <input type="checkbox" id="s17-c2" onchange="s17_update()" class="accent-lgred-500" />
+                                    <span>[중급] HTML 캔버스 핸즈온</span>
+                                </label>
+                                <label class="flex items-center gap-1.5 cursor-pointer text-slate-700">
+                                    <input type="checkbox" id="s17-c3" onchange="s17_update()" class="accent-lgred-500" />
+                                    <span>[실전] 사내 기안 배포 완료</span>
+                                </label>
+                            </div>
+                            <div class="col-span-5 text-center relative">
+                                <svg class="w-20 h-20 mx-auto transform -rotate-90" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" stroke="#F1F5F9" stroke-width="10" fill="none" />
+                                    <circle cx="50" cy="50" r="40" stroke="#C30D23" stroke-width="10" fill="none"
+                                            stroke-dasharray="251.2" stroke-dashoffset="167.46" id="s17-arc" class="transition-all duration-300" />
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="text-xs font-black text-slate-900" id="s17-pct">33%</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 18,
+                badge: "18",
+                category: "Interactive Layout",
+                title: "스마트 오버레이 툴팁 시스템",
+                desc: "약어 또는 복잡한 경영 전술 약식 설명 보완을 위해 마우스를 올리면 예쁜 대안 설명 보드가 마우스 포인터 옆에 뜨는 툴팁",
+                prompt: `전문 용어가 많은 보고서 웹앱을 위한 '초정밀 툴팁 컴포넌트'를 HTML로 코딩해줘. 특정 텍스트(예: RAG, LLM)에 마우스를 올렸을 때 마우스 좌표 옆에 설명 박스가 따라다니면서 스무스하게 보이도록 가이드를 제공해줘.`,
+                secrets: [
+                    "<b>Pointer Coordinates 트랙킹:</b> <code>mousemove</code> 이벤트에서 마우스 위치인 <code>clientX</code> 및 <code>clientY</code> 값을 취해 툴팁 박스의 absolute 위치에 직접 가산합니다.",
+                    "<b>CSS 가시성 스위칭:</b> 평소엔 <code>pointer-events-none opacity-0 scale-95</code>로 숨기다가 호버 활성화 시 <code>opacity-100 scale-100</code>로 펴서 매끄러운 윈도우 팝업을 연출합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full text-center py-4 relative">
+                            <p class="text-[10px] text-slate-600 leading-relaxed">
+                                사내 기획 보안을 준수하는 <span class="bg-lgred-50 text-lgred-500 font-bold px-1 rounded border border-lgred-100 cursor-help" 
+                                      onmouseenter="s18_show('검색 증강 생성(Retrieval-Augmented Generation). 사외 정보 유출 없이 사내 보안 문서만을 학습 데이터로 연동하여 완벽한 사실 기반 요약을 수행하는 지능형 기술.')" 
+                                      onmouseleave="s18_hide()">RAG 핵심 기술</span>과 대형 언어 모델의 유기적 매칭은 성과 창출의 필수 조건입니다.
+                            </p>
+                            <!-- 툴팁 오버레이 박스 -->
+                            <div id="s18-tooltip" class="absolute bg-slate-900 text-white p-2.5 rounded-xl shadow-2xl border border-slate-800 text-[8px] leading-relaxed max-w-[150px] text-left opacity-0 pointer-events-none transition-all duration-200 transform scale-95 z-30" style="top: 0; left: 0;">
+                                툴팁 설명내용
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 19,
+                badge: "19",
+                category: "Data Visualization",
+                title: "오각형 역량 평가 레이더 차트",
+                desc: "전혀 플러그인 없이 순수 SVG polygon 좌표 수식을 조절하여, 임직원 5대 AI 역량 밸런스를 입체적으로 비교하는 스파이더 웹 차트",
+                prompt: `외부 차트 모듈 없이 오직 SVG polygon 태그 좌표 연산을 활용하여 다차원 균형 평가를 위한 오각형 레이더 차트 웹가이드를 HTML 단일 코드로 제공해줘. LG 시그니처 레드를 포인트로 입체적인 투명 그라데이션 채우기를 가미해줘.`,
+                secrets: [
+                    "<b>삼각함수 좌표 연산:</b> 중심점에서 각 꼭짓점 방향 각도(<code>72도 간격</code>)에 맞추어 <code>cos</code> 및 <code>sin</code> 수학 공식으로 오각 정밀 좌표를 추출해 <code>points</code> 배열로 묶어 표현합니다.",
+                    "<b>반투명 투명 마감:</b> 면 내부 채우기에 <code>fill='#C30D23' fill-opacity='0.25'</code>를 매칭해 하부 축 그리드가 자연스럽게 비치도록 고품격화합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full text-center space-y-2">
+                            <h5 class="text-[10px] font-bold text-slate-800">사내 5대 AI 역량 진단 스파이더 (Radar Chart)</h5>
+                            <div class="relative w-36 h-36 mx-auto">
+                                <svg class="w-full h-full" viewBox="0 0 100 100">
+                                    <!-- 바깥 오각형 축 가이드선 -->
+                                    <polygon points="50,10 88,38 73,83 27,83 12,38" fill="none" stroke="#E2E8F0" stroke-width="1" />
+                                    <polygon points="50,25 78,46 67,80 33,80 22,46" fill="none" stroke="#E2E8F0" stroke-width="0.5" />
+                                    <!-- 실 주입 수치 오각형 데이터 좌표 (기획: 80, 개발: 50, 프롬프트: 90, 보안: 75, 속도: 60) -->
+                                    <polygon id="s19-polygon" points="50,22 80.4,43.2 68.4,74.7 32.7,74.7 27.2,43.2" 
+                                             fill="#C30D23" fill-opacity="0.25" stroke="#C30D23" stroke-width="1.5" class="transition-all duration-500" />
+                                    <!-- 레이더 끝점 포인트들 -->
+                                    <circle cx="50" cy="22" r="2" fill="#C30D23" />
+                                    <circle cx="80.4" cy="43.2" r="2" fill="#C30D23" />
+                                </svg>
+                            </div>
+                            <div class="flex justify-center gap-1.5 text-[8px] text-slate-400 font-bold">
+                                <span>기획력</span> • <span>프롬프트</span> • <span>윤리보안</span> • <span>자동화</span> • <span>신속성</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: 20,
+                badge: "20",
+                category: "Utility & Export",
+                title: "데이터 파일 모의 분석 프리뷰어",
+                desc: "사용자가 엑셀이나 텍스트 기밀 서류를 올리는 드롭 망 구조를 모방하여, 임시 목업 샘플 테이블을 실시간 생성하는 인터랙티브 가동 가이드",
+                prompt: `보고서 가독성 확보를 위해 사내 가상 데이터 파일을 드래그하여 올리면 아래 테이블 그리드가 역동적으로 튀어나오는 'HTML 파일 모의 프리뷰 컴포넌트'를 바닐라 자바스크립트로 코딩해줘.`,
+                secrets: [
+                    "<b>Mock 드롭존 트리거:</b> <code>dragover</code>, <code>drop</code> 이벤트를 감지하여 브라우저의 기본 파일 오픈 동작을 차단(<code>preventDefault</code>)하고, 예쁜 가상 성공 데이터를 아래 그리드 테이블에 즉각 주입합니다.",
+                    "<b>파일 적합성 시각 효과:</b> 드래그 타겟이 진입하면 테두리가 <code>border-lgred-500 bg-lgred-50</code>으로 반응하여 사용자 액션 완료 피드백을 전달합니다."
+                ],
+                renderDemo: function(containerId) {
+                    const mount = document.getElementById(containerId);
+                    mount.innerHTML = `
+                        <div class="w-full space-y-2 text-center text-[10px]">
+                            <div id="s20-drop" ondragover="s20_over(event)" ondragleave="s20_leave()" ondrop="s20_drop(event)" onclick="s20_triggerMock()"
+                                 class="border-2 border-dashed border-slate-300 rounded-xl p-3 bg-slate-50 cursor-pointer hover:bg-slate-100 transition-all">
+                                <i class="fa-solid fa-cloud-arrow-up text-lgred-500 text-lg mb-1 animate-bounce"></i>
+                                <span class="block font-bold text-slate-700">여기를 클릭하여 모의 데이터 로드</span>
+                                <span class="block text-[8px] text-slate-400 mt-0.5">안전 가이드: 기밀 파일 외부 업로드 없이 임시 시퀀스를 테스트합니다.</span>
+                            </div>
+                            <div class="overflow-x-auto rounded-lg border border-slate-100 max-h-[80px] overflow-y-auto hidden" id="s20-table-box">
+                                <table class="w-full text-left text-[9px] bg-white border-collapse">
+                                    <thead>
+                                        <tr class="bg-slate-50 text-slate-500 border-b border-slate-100"><th class="p-1">파일명</th><th class="p-1">타당성</th><th class="p-1">상태</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-slate-100 text-slate-700"><td class="p-1 font-bold">2026_AI_Edu_Result.xlsx</td><td class="p-1 text-emerald-600">안전성 확보</td><td class="p-1 font-bold text-lgred-500">분석 완료</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        ];
+
+        // 가상 페이지 관리: 총 10페이지 (한 화면에 2개씩 노출)
+        let currentPage = 1;
+        const totalPages = 10;
+
+        // 화면 부팅 시 구동
+        window.onload = function() {
+            renderSidebarMenu();
+            renderActivePage();
+        };
+
+        // 좌측 사이드바 20가지 스킬 전체 렌더링
+        function renderSidebarMenu() {
+            const container = document.getElementById("skill-list-container");
+            if (!container) return;
+
+            container.innerHTML = "";
+            REPORT_SKILLS_DATA.forEach((skill, idx) => {
+                const btn = document.createElement("button");
+                // 해당 스킬이 포함된 가상 페이지 구하기 (스킬 ID 기준, 예: ID 13 -> 7페이지)
+                const pageNum = Math.ceil(skill.id / 2);
+                const isSkillOnCurrentPage = (pageNum === currentPage);
+
+                btn.className = `w-full text-left p-2 rounded-xl flex items-center gap-2.5 transition-all cursor-pointer ${isSkillOnCurrentPage ? 'bg-lgred-50 border-l-4 border-lgred-500 text-lgred-500' : 'hover:bg-slate-50 text-slate-600'}`;
+                btn.onclick = () => {
+                    currentPage = pageNum;
+                    renderSidebarMenu();
+                    renderActivePage();
+                    // 클릭한 특정 스킬 카드로 부드럽게 스크롤 및 하이라이트
+                    setTimeout(() => {
+                        const targetCard = document.getElementById(`skill-card-${skill.id}`);
+                        if (targetCard) {
+                            targetCard.scrollIntoView({ behavior: "smooth", block: "center" });
+                            targetCard.classList.add("ring-4", "ring-lgred-500");
+                            setTimeout(() => {
+                                targetCard.classList.remove("ring-4", "ring-lgred-500");
+                            }, 1500);
+                        }
+                    }, 100);
+                };
+                btn.innerHTML = `
+                    <span class="w-5 h-5 rounded ${isSkillOnCurrentPage ? 'bg-lgred-500 text-white' : 'bg-slate-100 text-slate-400'} flex items-center justify-center font-bold text-[10px] shrink-0">${skill.badge}</span>
+                    <span class="text-[11px] font-semibold truncate">${skill.title}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        // 현재 페이지에 활성화되어야 할 2개의 스킬 카드 렌더링
+        function renderActivePage() {
+            const panelContainer = document.getElementById("double-panel-container");
+            if (!panelContainer) return;
+
+            // 페이지 타이틀 & 진행도 뱃지 업데이트
+            document.getElementById("current-page-badge").innerText = currentPage;
+            document.getElementById("page-progress").innerText = `PAGE ${currentPage} / ${totalPages}`;
+
+            // 이번 페이지 대상 2개의 스킬 도출 (예: Page 1 -> ID 1, 2)
+            const indexStart = (currentPage - 1) * 2;
+            const activeSkills = REPORT_SKILLS_DATA.slice(indexStart, indexStart + 2);
+
+            // 해당 페이지 타이틀 매칭
+            const pageTitles = [
+                "1장: 기본 레이아웃 및 접기/펼침 편",
+                "2장: 데이터 시각화 기초 (도넛/막대)",
+                "3장: 다차원 포지셔닝 및 테마 제어",
+                "4장: KPI 계측 가이던스 및 상세 모달",
+                "5장: 양방향 슬라이더 및 인쇄 인클루시브",
+                "6장: 분기 로드맵 및 초고속 실시간 필터",
+                "7장: 접근성 플로팅 바 및 순위 우선 정렬",
+                "8장: 동적 리더보드 및 연간 ROI 정산",
+                "9장: 마일스톤 진척 및 오버레이 스마트 툴팁",
+                "10장: 스파이더 웹 레이더 및 목업 데이터 드롭존"
+            ];
+            document.getElementById("current-page-title").innerText = pageTitles[currentPage - 1];
+
+            panelContainer.innerHTML = "";
+            activeSkills.forEach(skill => {
+                const card = document.createElement("div");
+                card.id = `skill-card-${skill.id}`;
+                card.className = "bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col overflow-hidden transition-all duration-300 min-h-[560px]";
+
+                // 카드 뼈대 템플릿
+                card.innerHTML = `
+                    <!-- 탑 데모 타이틀 -->
+                    <div class="bg-slate-50 px-4 py-2 border-b border-slate-200 flex justify-between items-center no-print">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-lgred-500"></span>
+                            <span class="text-[10px] font-black text-slate-800 uppercase tracking-wider">SKILL ${skill.badge} • ${skill.category}</span>
+                        </div>
+                        <span class="text-[9px] text-slate-400 font-bold"><i class="fa-solid fa-hand-pointer text-lgred-500 mr-1"></i>반응형 데모</span>
+                    </div>
+
+                    <!-- 실제 가동 캔버스 마운트 영역 -->
+                    <div class="p-5 flex-1 flex flex-col justify-center bg-white border-b border-slate-100 min-h-[160px]" id="demo-box-${skill.id}">
+                        <!-- JS callback inside -->
+                    </div>
+
+                    <!-- 프롬프트 가이드 공식 및 요약 꿀팁 영역 -->
+                    <div class="bg-slate-900 text-slate-100 p-4 space-y-3.5 no-print">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">Gemini Prompt Formula</span>
+                            <button onclick="copyPromptText(${skill.id})" class="text-[8px] bg-slate-800 hover:bg-slate-700 text-slate-200 px-2 py-1 rounded border border-slate-700 flex items-center gap-1 transition-all cursor-pointer">
+                                <i class="fa-regular fa-clone" id="copy-icon-${skill.id}"></i> <span id="copy-txt-${skill.id}">복사</span>
+                            </button>
+                        </div>
+                        
+                        <!-- 프롬프트 코드 공간 -->
+                        <div class="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
+                            <pre class="text-[9px] text-slate-300 font-mono whitespace-pre-wrap leading-relaxed max-h-24 overflow-y-auto" id="prompt-txt-source-${skill.id}">${skill.prompt}</pre>
+                        </div>
+
+                        <!-- 핵심 요점 가이드 수록 -->
+                        <div class="space-y-1.5">
+                            <span class="text-[9px] font-bold text-emerald-400 uppercase tracking-widest"><i class="fa-regular fa-circle-question mr-1"></i>현업 적용 핵심 요점</span>
+                            <ul class="text-[9px] text-slate-400 space-y-1 list-disc list-inside">
+                                ${skill.secrets.map(sec => `<li>${sec}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+
+                panelContainer.appendChild(card);
+                // 개별 스킬 데모 탑재 함수 작동
+                skill.renderDemo(`demo-box-${skill.id}`);
+            });
+        }
+
+        // 페이지 이전/다음 이동 탐색기
+        function navigatePage(direction) {
+            currentPage += direction;
+            if (currentPage < 1) currentPage = totalPages;
+            if (currentPage > totalPages) currentPage = 1;
+            renderSidebarMenu();
+            renderActivePage();
+        }
+
+        // 클립보드 문자 복사
+        function copyPromptText(skillId) {
+            const text = document.getElementById(`prompt-txt-source-${skillId}`).innerText;
+            const dummy = document.createElement("textarea");
+            dummy.value = text;
+            document.body.appendChild(dummy);
+            dummy.select();
+            
+            try {
+                const ok = document.execCommand("copy");
+                if (ok) {
+                    // 복사 성공 딱지 노출
+                    const btnText = document.getElementById(`copy-txt-${skillId}`);
+                    const btnIcon = document.getElementById(`copy-icon-${skillId}`);
+                    if (btnText && btnIcon) {
+                        btnText.innerText = "완료";
+                        btnIcon.className = "fa-solid fa-check text-green-400";
+                        setTimeout(() => {
+                            btnText.innerText = "복사";
+                            btnIcon.className = "fa-regular fa-clone";
+                        }, 2000);
+                    }
+                    showToastNotification("프롬프트 복사 성공! Gemini 캔버스에 붙여넣어 활용하세요.");
+                }
+            } catch (err) {
+                showToastNotification("복사 실패. 수동 복사 부탁드립니다.");
+            }
+            document.body.removeChild(dummy);
+        }
+
+        // 화면 하단 토스트 팝업 띄우기
+        function showToastNotification(msg) {
+            const toast = document.getElementById("toast-message");
+            const text = document.getElementById("toast-text");
+            if (!toast || !text) return;
+            text.innerText = msg;
+            
+            toast.classList.remove("translate-y-20", "opacity-0", "pointer-events-none");
+            toast.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
+            
+            setTimeout(() => {
+                toast.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
+                toast.classList.add("translate-y-20", "opacity-0", "pointer-events-none");
+            }, 3000);
+        }
+
+        // ==========================================
+        // 스킬 전용 백그라운드 엔진 동작 코드집
+        // ==========================================
+
+        // --- 1번 스킬: 가상 탭 페이지 제어 ---
+        function s1_switchTab(tabId) {
+            const tabs = document.querySelectorAll(".s1-tab");
+            tabs.forEach(t => {
+                t.className = "s1-tab px-3 py-1.5 border-b-2 border-transparent text-xs font-medium text-slate-500 hover:text-slate-800";
+            });
+            const pages = document.querySelectorAll(".s1-page");
+            pages.forEach(p => p.classList.add("hidden"));
+
+            const activeBtn = document.getElementById(`s1-btn-${tabId}`);
+            if (activeBtn) activeBtn.className = "s1-tab px-3 py-1.5 border-b-2 border-lgred-500 text-xs font-bold text-lgred-500";
+            
+            const activePage = document.getElementById(`s1-page-${tabId}`);
+            if (activePage) activePage.classList.remove("hidden");
+        }
+
+        // --- 2번 스킬: 아코디언 드롭 토글 ---
+        function s2_toggle(idx) {
+            const targetContent = document.getElementById(`s2-content-${idx}`);
+            const targetIcon = document.getElementById(`s2-icon-${idx}`);
+            if (!targetContent || !targetIcon) return;
+
+            const isCurrentlyOpen = (targetContent.style.maxHeight !== '0px' && targetContent.style.maxHeight !== '');
+
+            // 일괄 초기화
+            [1, 2].forEach(i => {
+                const c = document.getElementById(`s2-content-${i}`);
+                const ic = document.getElementById(`s2-icon-${i}`);
+                if (c) c.style.maxHeight = '0px';
+                if (ic) ic.classList.remove("rotate-180");
+            });
+
+            if (!isCurrentlyOpen) {
+                targetContent.style.maxHeight = '200px';
+                targetIcon.classList.add("rotate-180");
+            }
+        }
+
+        // --- 3번 스킬: 도넛 차트 업데이트 ---
+        function s3_update(title, pct, desc) {
+            document.getElementById("s3-dn-pct").innerText = pct;
+            document.getElementById("s3-dn-lbl").innerText = title;
+            document.getElementById("s3-dn-desc").innerText = desc;
+        }
+        function s3_reset() {
+            document.getElementById("s3-dn-pct").innerText = "100%";
+            document.getElementById("s3-dn-lbl").innerText = "전체 사용";
+            document.getElementById("s3-dn-desc").innerText = "그래프 각 세그먼트에 마우스를 올려 상세 활용처를 탐색하세요.";
+        }
+
+        // --- 4번 스킬: 막대 갱신 셔플러 ---
+        function s4_shuffle() {
+            const v0 = Math.floor(Math.random() * 120) + 30;
+            const v1 = Math.floor(Math.random() * 90) + 20;
+            const v2 = Math.floor(Math.random() * 70) + 10;
+            const max = Math.max(v0, v1, v2);
+
+            document.getElementById("s4-bar-0").style.width = `${(v0/max)*100}%`;
+            document.getElementById("s4-bar-1").style.width = `${(v1/max)*100}%`;
+            document.getElementById("s4-bar-2").style.width = `${(v2/max)*100}%`;
+
+            document.getElementById("s4-lbl-0").innerText = `${v0} h`;
+            document.getElementById("s4-lbl-1").innerText = `${v1} h`;
+            document.getElementById("s4-lbl-2").innerText = `${v2} h`;
+        }
+
+        // --- 5번 스킬: 2x2 매트릭스 노드 하이라이터 ---
+        function s5_select(nodeId, title, coord, desc) {
+            document.querySelectorAll(".s5-node").forEach(n => {
+                n.classList.remove("ring-4", "ring-lgred-500", "scale-110");
+            });
+            const target = document.getElementById(`s5-${nodeId}`);
+            if (target) target.classList.add("ring-4", "ring-lgred-500", "scale-110");
+
+            document.getElementById("s5-box").innerHTML = `
+                <h6 class="text-[10px] font-bold text-lgred-500">${title} (${coord})</h6>
+                <p class="text-[9px] text-slate-600 mt-0.5 leading-normal">${desc}</p>
+            `;
+        }
+
+        // --- 6번 스킬: 임시 컬러 스위처 ---
+        function s6_theme(main, bg) {
+            const wrap = document.getElementById("s6-wrapper");
+            if (wrap) {
+                wrap.style.setProperty('--s6-color', main);
+                wrap.style.setProperty('--s6-bg', bg);
+            }
+        }
+
+        // --- 7번 스킬: 반원 아크 게이지 충전기 ---
+        function s7_set(pct) {
+            const arc = document.getElementById("s7-arc");
+            const lbl = document.getElementById("s7-val");
+            if (!arc || !lbl) return;
+
+            const val = 125.6 - (125.6 * (pct / 100));
+            arc.style.strokeDashoffset = val;
+            lbl.innerText = `${pct}%`;
+        }
+
+        // --- 8번 스킬: 임시 모달 개방 제어 ---
+        function s8_open() {
+            const m = document.getElementById("s8-modal");
+            const c = document.getElementById("s8-card");
+            if (m && c) {
+                m.classList.remove("hidden");
+                setTimeout(() => {
+                    c.classList.remove("scale-95", "opacity-0");
+                    c.classList.add("scale-100", "opacity-100");
+                }, 50);
+            }
+        }
+        function s8_close(e, force = false) {
+            const m = document.getElementById("s8-modal");
+            const c = document.getElementById("s8-card");
+            if (e.target === m || force) {
+                if (c) {
+                    c.classList.remove("scale-100", "opacity-100");
+                    c.classList.add("scale-95", "opacity-0");
+                }
+                setTimeout(() => {
+                    if (m) m.classList.add("hidden");
+                }, 200);
+            }
+        }
+
+        // --- 9번 스킬: Before/After 비교 연산 ---
+        function s9_calc() {
+            const slider = document.getElementById("s9-slider");
+            const b = document.getElementById("s9-before");
+            const a = document.getElementById("s9-after");
+            const banner = document.getElementById("s9-banner");
+
+            if (!slider || !b || !a) return;
+            const val = parseInt(slider.value);
+            const remaining = 100 - val;
+
+            b.style.width = `${remaining}%`;
+            a.style.width = `${val}%`;
+
+            document.getElementById("s9-val-before").innerText = `${(9.0 * (remaining/100)).toFixed(1)}h`;
+            document.getElementById("s9-val-after").innerText = `${(1.5 * (val/100)).toFixed(1)}h`;
+
+            if (val >= 75) {
+                if (banner) banner.classList.remove("hidden");
+            } else {
+                if (banner) banner.classList.add("hidden");
+            }
+        }
+
+        // --- 11번 스킬: 수평 연대기 마일스톤 노드 조율 ---
+        function s11_step(idx, title, desc) {
+            document.querySelectorAll(".s11-node").forEach(n => {
+                n.className = "s11-node w-7 h-7 rounded-full bg-slate-300 text-slate-600 text-[10px] font-bold flex items-center justify-center cursor-pointer transition-all";
+            });
+            const target = document.getElementById(`s11-btn-${idx}`);
+            if (target) target.className = "s11-node w-7 h-7 rounded-full bg-lgred-500 text-white text-[10px] font-bold flex items-center justify-center cursor-pointer transition-all";
+
+            document.getElementById("s11-title").innerText = title;
+            document.getElementById("s11-desc").innerText = desc;
+        }
+
+        // --- 12번 스킬: 데이터 리스트 테이블 필터 ---
+        function s12_filter() {
+            const val = document.getElementById("s12-search").value.toLowerCase();
+            const rows = document.querySelectorAll("#s12-tbody tr");
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                if (text.includes(val)) {
+                    r.style.display = "";
+                } else {
+                    r.style.display = "none";
+                }
+            });
+        }
+
+        // --- 13번 스킬: TOC 가상 스크롤바 ---
+        function s13_scroll(el) {
+            const progress = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+            document.getElementById("s13-bar").style.width = `${progress}%`;
+
+            // 스크롤 탑 기준 단락 활성
+            const t1 = document.getElementById("s13-toc-1");
+            const t2 = document.getElementById("s13-toc-2");
+            const t3 = document.getElementById("s13-toc-3");
+
+            t1.className = "border-l border-transparent pl-1";
+            t2.className = "border-l border-transparent pl-1";
+            t3.className = "border-l border-transparent pl-1";
+
+            if (progress < 40) {
+                t1.className = "text-lgred-500 border-l border-lgred-500 pl-1";
+            } else if (progress < 80) {
+                t2.className = "text-lgred-500 border-l border-lgred-500 pl-1";
+            } else {
+                t3.className = "text-lgred-500 border-l border-lgred-500 pl-1";
+            }
+        }
+
+        // --- 14번 스킬: 우선 순위 카드 재배열 ---
+        const MOCK_CARDS_DATA = [
+            { title: "보안 필터 RAG", priority: 1, cost: 200, spec: "우선순위: 최고 / 비용: 중" },
+            { title: "자동 이메일 기획", priority: 2, cost: 50, spec: "우선순위: 중간 / 비용: 최하" },
+            { title: "사내 번역 연동봇", priority: 3, cost: 10, spec: "우선순위: 낮음 / 비용: 초소량" },
+            { title: "통합 분석 에이전트", priority: 1, cost: 500, spec: "우선순위: 최고 / 비용: 높음" }
+        ];
+        function s14_sort(type) {
+            const grid = document.getElementById("s14-grid");
+            if (!grid) return;
+
+            let sorted = [...MOCK_CARDS_DATA];
+            if (type === 'prio') {
+                sorted.sort((x, y) => x.priority - y.priority);
+            } else {
+                sorted.sort((x, y) => x.cost - y.cost);
+            }
+
+            grid.innerHTML = "";
+            sorted.forEach(c => {
+                grid.innerHTML += `
+                    <div class="bg-slate-50 border border-slate-100 p-2 rounded-lg text-left">
+                        <strong class="text-slate-950 font-bold block">${c.title}</strong>
+                        <span class="text-[8px] text-slate-400 block mt-0.5">${c.spec}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // --- 15번 스킬: 리더보드 동적 순위 교환 ---
+        let MOCK_RANKS = [
+            { name: "LG 기획 관리 부문", score: 92 },
+            { name: "DX 엔지니어링 본부", score: 88 },
+            { name: "글로벌 영업 기획단", score: 75 }
+        ];
+        function s15_render() {
+            const b = document.getElementById("s15-board");
+            if (!b) return;
+
+            MOCK_RANKS.sort((x, y) => y.score - x.score);
+            b.innerHTML = "";
+            MOCK_RANKS.forEach((r, idx) => {
+                const colors = ['bg-lgred-500 text-white', 'bg-lgred-300 text-white', 'bg-slate-400 text-white'];
+                b.innerHTML += `
+                    <div class="flex items-center justify-between p-1.5 bg-slate-50 rounded-lg border border-slate-100 transition-all duration-300">
+                        <div class="flex items-center gap-2">
+                            <span class="w-4 h-4 rounded ${colors[idx] || 'bg-slate-200'} flex items-center justify-center font-bold text-[8px]">${idx + 1}</span>
+                            <span class="font-bold text-slate-800">${r.name}</span>
+                        </div>
+                        <span class="font-black text-lgred-500">${r.score} 점</span>
+                    </div>
+                `;
+            });
+        }
+        function s15_boost() {
+            MOCK_RANKS[2].score += Math.floor(Math.random() * 10) + 12; // 3위 부서 가중치 부스트
+            s15_render();
+        }
+
+        // --- 16번 스킬: ROI 환산 연산기 ---
+        function s16_calc() {
+            const head = parseInt(document.getElementById("s16-head").value) || 0;
+            const hours = parseInt(document.getElementById("s16-hours").value) || 0;
+            const priceUnit = 3000; // 시간당 기준 단가 가상 책정
+            const annualSavings = head * hours * 52 * priceUnit;
+
+            document.getElementById("s16-total").innerText = `₩ ${annualSavings.toLocaleString()}`;
+        }
+
+        // --- 17번 스킬: 체크박스 진척도 ---
+        function s17_update() {
+            const c1 = document.getElementById("s17-c1").checked;
+            const c2 = document.getElementById("s17-c2").checked;
+            const c3 = document.getElementById("s17-c3").checked;
+
+            let score = 0;
+            if (c1) score += 33.3;
+            if (c2) score += 33.3;
+            if (c3) score += 33.4;
+
+            const pct = Math.round(score);
+            document.getElementById("s17-pct").innerText = `${pct}%`;
+
+            const arc = document.getElementById("s17-arc");
+            if (arc) {
+                // 251.2 원 둘레
+                const offset = 251.2 - (251.2 * (pct / 100));
+                arc.style.strokeDashoffset = offset;
+            }
+        }
+
+        // --- 18번 스킬: 오버레이 툴팁 마우스 포인터 트랙킹 ---
+        function s18_show(text) {
+            const tip = document.getElementById("s18-tooltip");
+            if (tip) {
+                tip.innerText = text;
+                tip.classList.remove("opacity-0", "pointer-events-none", "scale-95");
+                tip.classList.add("opacity-100", "scale-100");
+            }
+        }
+        function s18_hide() {
+            const tip = document.getElementById("s18-tooltip");
+            if (tip) {
+                tip.classList.remove("opacity-100", "scale-100");
+                tip.classList.add("opacity-0", "pointer-events-none", "scale-95");
+            }
+        }
+
+        // --- 20번 스킬: 모의 드롭 드래그 로드 기조 ---
+        function s20_over(e) {
+            e.preventDefault();
+            document.getElementById("s20-drop").className = "border-2 border-dashed border-lgred-500 rounded-xl p-3 bg-lgred-50 cursor-pointer transition-all";
+        }
+        function s20_leave() {
+            document.getElementById("s20-drop").className = "border-2 border-dashed border-slate-300 rounded-xl p-3 bg-slate-50 cursor-pointer transition-all";
+        }
+        function s20_drop(e) {
+            e.preventDefault();
+            s20_triggerMock();
+        }
+        function s20_triggerMock() {
+            s20_leave();
+            const table = document.getElementById("s20-table-box");
+            if (table) table.classList.remove("hidden");
+            showToastNotification("사내 모의 데이터가 보안 컴파일러를 통과해 안전하게 하단 로드되었습니다!");
+        }
+    </script>
+</body>
+</html>
