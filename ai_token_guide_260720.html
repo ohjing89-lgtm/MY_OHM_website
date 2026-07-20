@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>고객가치혁신부문 AI 툴 "제대로된 토큰 사용법"</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lgred: {
+                            50: '#FFF1F2',
+                            100: '#FFE4E6',
+                            200: '#FECDD3',
+                            500: '#C4001A', // LG Red Main Color
+                            600: '#A50034', // LG Premium Dark Red
+                            700: '#850026',
+                        },
+                        neutralbg: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth hover state transitions */
+        .interactive-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .interactive-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Top Brand Header -->
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-lgred-500 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-lgred-500/20">
+                    L
+                </div>
+                <span class="font-extrabold text-xl tracking-tight text-gray-900">
+                    고객가치혁신부문 AI 툴 <span class="text-lgred-500">"제대로된 토큰 사용법"</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Outer Container (Wider layout) -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full space-y-12">
+
+        <!-- Hero Section / Context Intro -->
+        <section class="bg-gradient-to-br from-white via-white to-lgred-50/10 p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm text-center sm:text-left">
+            <h1 class="text-3xl sm:text-4xl font-black text-gray-900 leading-tight">
+                "AI 답변 하나에 왜 이렇게 돈이 많이 나올까?"<br class="hidden sm:inline" />
+                <span class="text-lgred-500">실무진을 위한 AI 토큰 다이어트 가이드</span>
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-gray-600 leading-relaxed max-w-4xl">
+                매일 쓰는 AI API 비용, 어려운 기술 지식 없이도 몇 가지 나쁜 습관만 교정하면 지출을 절반 이하로 줄일 수 있습니다. 본 가이드는 우리가 무심코 저지르는 실수들과 실무 선임들의 생생한 사례를 바탕으로 가장 현실적인 비용 다이어트 해법을 제시합니다.
+            </p>
+        </section>
+
+        <!-- SECTION 1: 4가지 토큰의 개념 및 효율적 사용법 -->
+        <section class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+            <div class="border-b border-gray-100 pb-5">
+                <span class="text-xs font-bold text-lgred-500 uppercase tracking-wider">Concept 01</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-1">도대체 비용은 어디서 새고 있을까? 4대 토큰 개념 정리</h2>
+                <p class="text-sm text-gray-500 mt-1">내가 보낸 질문과 AI가 내놓은 대답이 계산되는 방식을 쉬운 비유로 알아봅니다.</p>
+            </div>
+
+            <!-- 4 Grid Concepts Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Input Token -->
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-200/60 interactive-card space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">📥</span>
+                        <h3 class="font-bold text-gray-900 text-lg">입력 토큰 (내 질문지)</h3>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>어떨 때 발생하나요?</strong> 내가 작성한 질문, 시스템에 입력해 둔 사전 약속(지침), 첨부 파일 등을 AI에게 넘겨줄 때 발생합니다.</p>
+                        <p><strong>기본 요금 성격:</strong> 기준점이 되는 보통 강도의 기본 요금이 청구됩니다.</p>
+                        <p class="text-lgred-500 bg-lgred-50/50 p-2.5 rounded-lg border border-lgred-100 text-xs font-semibold">
+                            ⚠️ 잘못 쓰면 이렇게 됩니다: 질문할 때마다 수십 장짜리 가이드를 매번 처음부터 끝까지 새로 복사해서 붙여넣으면 질문 한 번당 요금이 무한 누적됩니다.
+                        </p>
+                        <p class="text-emerald-700 font-medium text-xs">✔️ 탈출 비법: 자주 바뀌는 짧은 질문은 늘 문서 맨 마지막에 놓으세요.</p>
+                    </div>
+                </div>
+
+                <!-- Output Token -->
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-200/60 interactive-card space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-sm">📤</span>
+                        <h3 class="font-bold text-gray-900 text-lg">출력 토큰 (AI 답변지)</h3>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>어떨 때 발생하나요?</strong> AI가 고민 끝에 내놓는 실시간 답변 결과의 글자 수에 비례하여 발생합니다.</p>
+                        <p><strong>기본 요금 성격:</strong> AI가 직접 창작해야 하므로 <strong>입력 요금보다 무려 3~5배 더 비쌉니다.</strong></p>
+                        <p class="text-lgred-500 bg-lgred-50/50 p-2.5 rounded-lg border border-lgred-100 text-xs font-semibold">
+                            ⚠️ 잘못 쓰면 이렇게 됩니다: "간단히 알려줘"라고 명시하지 않아서 AI가 구구절절 쓸데없는 미사여구와 배경지식까지 길게 답변하도록 방치하는 경우입니다.
+                        </p>
+                        <p class="text-emerald-700 font-medium text-xs">✔️ 탈출 비법: "필요한 핵심만 번호 매겨서 한 줄로 요약해줘"와 같이 글자 수 제약을 거세요.</p>
+                    </div>
+                </div>
+
+                <!-- Cache Write -->
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-200/60 interactive-card space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-sm">💾</span>
+                        <h3 class="font-bold text-gray-900 text-lg">캐시 쓰기 (기억 저장소 개설)</h3>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>어떨 때 발생하나요?</strong> 자주 묻는 대규모 업무 메뉴얼이나 공통 양식을 AI의 똑똑한 임시 기억장치에 처음으로 단단하게 고정·등록할 때 발생합니다.</p>
+                        <p><strong>기본 요금 성격:</strong> 처음 등록할 때 딱 한 번, 기본요금 대비 소액의 추가 가산금이 일시적으로 발생합니다.</p>
+                        <p class="text-lgred-500 bg-lgred-50/50 p-2.5 rounded-lg border border-lgred-100 text-xs font-semibold">
+                            ⚠️ 잘못 쓰면 이렇게 됩니다: 임시 기억장치를 유지해야 하는데 가이드 글자 하나를 매번 비틀어버리면 저장소를 파괴하고 계속 비싼 새로고침 쓰기 요금만 반복됩니다.
+                        </p>
+                        <p class="text-emerald-700 font-medium text-xs">✔️ 탈출 비법: 공통 지침 본문은 완전히 고정시켜 타이핑하지 마세요.</p>
+                    </div>
+                </div>
+
+                <!-- Cache Read -->
+                <div class="p-6 rounded-2xl bg-gray-50 border border-gray-200/60 interactive-card space-y-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm">🧠</span>
+                        <h3 class="font-bold text-gray-900 text-lg">캐시 읽기 (저장된 기억 불러오기)</h3>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <p><strong>어떨 때 발생하나요?</strong> 이미 기억장치에 저장된 고정 지침을 그대로 두고, 오직 마지막 질문만 바꿔서 똑똑하게 기존 지식을 재사용할 때 발생합니다.</p>
+                        <p><strong>기본 요금 성격:</strong> <strong>엄청나게 저렴합니다!</strong> (원래 지불해야 할 입력 토큰 요금의 상당량을 아낄 수 있는 마법의 구간)</p>
+                        <p class="text-lgred-500 bg-lgred-50/50 p-2.5 rounded-lg border border-lgred-100 text-xs font-semibold">
+                            ⚠️ 잘못 쓰면 이렇게 됩니다: 질문 묶음의 제일 앞부분에 "오늘 날짜", "회원 이름" 같은 매번 바뀌는 변수를 넣어버리면 AI가 이전의 고정 기억을 사용하지 못해 이 비싼 혜택을 단 한 번도 누리지 못하게 됩니다.
+                        </p>
+                        <p class="text-emerald-700 font-medium text-xs">✔️ 탈출 비법: AI가 이전 대화를 한 번에 불러오도록 앞 단어를 항상 동일하게 유지하세요.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CRITICAL IMPACT: Don't Break Cache Read Campaign -->
+            <div class="bg-lgred-50 border-2 border-lgred-200 rounded-2xl p-6 sm:p-8 space-y-4">
+                <div class="flex items-center space-x-3 text-lgred-500">
+                    <span class="text-2xl">⚠️</span>
+                    <h3 class="text-lg font-extrabold tracking-tight">집중 경고! "기억 불러오기(캐시 읽기)"를 망가뜨리는 나쁜 행동을 뿌리뽑아야 합니다!</h3>
+                </div>
+                <p class="text-sm text-gray-700 leading-relaxed">
+                    AI가 공통 가이드라인 문서나 매뉴얼을 매번 처음부터 끝까지 글자 그대로 하나씩 읽는 상황은 비효율적이며 비용을 불리는 지름길입니다. 한 번 불러온 매뉴얼을 완벽하게 재사용(캐시 읽기)하게 만들어야 요금이 혁신적으로 절약됩니다.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div class="bg-white p-4 rounded-xl border border-lgred-100">
+                        <span class="text-xs font-bold text-lgred-600 block mb-1">❌ 캐시를 깨뜨려 요금을 폭발시키는 행동</span>
+                        <p class="text-xs text-gray-500 leading-normal">
+                            질문 템플릿 최상단에 매번 바뀌는 정보(예: "현재시각: 오전 11:32")를 박아 넣는 행위. 이럴 경우 AI는 뒷내용이 아무리 똑같아도 기억을 처음부터 다시 씁니다.
+                        </p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-2 border-emerald-500">
+                        <span class="text-xs font-bold text-emerald-600 block mb-1">💡 돈을 극적으로 아끼는 올바른 행동</span>
+                        <p class="text-xs text-gray-500 leading-normal">
+                            모든 변하는 데이터(날짜, 유저명, 질문 본문)는 반드시 <strong>가장 마지막 줄</strong>에 배치하고, 위쪽 95%의 긴 문서 영역은 항상 한 글자도 바꾸지 않고 그대로 복사해 보내는 습관을 들여야 합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: 리얼 사례 분석 - A선임 vs B선임 -->
+        <section class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+            <div class="border-b border-gray-100 pb-5">
+                <span class="text-xs font-bold text-lgred-500 uppercase tracking-wider">Case Study 02</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-1">우리 팀 A선임 vs B선임의 토큰 절약 배틀</h2>
+                <p class="text-sm text-gray-500 mt-1">동일한 업무를 처리할 때 두 사람의 완전히 다른 행동이 가져온 토큰 청구서 차이를 비교해 봅니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Case A: Senior A -->
+                <div class="border border-gray-200 rounded-2xl p-6 bg-gray-50/50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-bold">입력 최소화파</span>
+                            <span class="text-sm text-gray-400">A선임의 행동 패턴</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-2">"질문을 쪼개서 자잘하게 반복해서 묻기"</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                            A선임은 AI에 들어가는 최초 <strong>입력 글자 수</strong> 자체를 아껴보고자 긴 상황 설명을 단번에 쓰지 않고, 짤막한 단답형 질문을 한 채팅창에서 대화하듯 연달아 계속 던집니다.
+                        </p>
+                        <div class="bg-red-50 text-red-700 text-xs p-3 rounded-lg border border-red-100 space-y-1">
+                            <p class="font-bold">🚨 뜻하지 않은 비용 누수 지점:</p>
+                            <p class="leading-normal">AI는 대화의 맥락을 이해하기 위해 <strong>이전 질문과 답변들을 전부 합쳐 누적된 입력값으로 전달</strong>받습니다. 연속해서 물어볼수록 앞선 질문들이 눈덩이처럼 누적 전송되어 오히려 후반부에는 엄청난 입력 토큰 폭탄을 고스란히 맞게 됩니다.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-200 pt-4 mt-6">
+                        <span class="text-xs text-gray-400 block">A선임의 토큰 절약 성적</span>
+                        <span class="text-lg font-extrabold text-red-500">효율성 낮음 (동일 세션 반복 질문 시 비용 누적)</span>
+                    </div>
+                </div>
+
+                <!-- Case B: Senior B -->
+                <div class="border border-gray-200 rounded-2xl p-6 bg-gray-50/50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">출력 철벽 수비파</span>
+                            <span class="text-sm text-gray-400">B선임의 행동 패턴</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-gray-900 mb-2">"출력되는 답변 글자 수 타이트하게 조이기"</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed mb-4">
+                            B선임은 3배 이상 비싼 <strong>출력 토큰</strong>을 방어하는 데 집중했습니다. AI가 장황하게 늘어놓지 못하도록 질문 끝자락마다 엄격하고 정교한 형식 제한 조건을 명시합니다.
+                        </p>
+                        <div class="bg-emerald-50 text-emerald-700 text-xs p-3 rounded-lg border border-emerald-100 space-y-1">
+                            <p class="font-bold">💡 실천 가이드 예시:</p>
+                            <p class="leading-normal font-mono">"불필요한 서론/인사말 빼고, 결과 데이터만 깔끔하게 JSON 포맷으로 출력해줘." 또는 "세 줄 요약해서 핵심 피드백만 명시할 것."</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-200 pt-4 mt-6">
+                        <span class="text-xs text-gray-400 block">B선임의 토큰 절약 성적</span>
+                        <span class="text-lg font-extrabold text-emerald-600">효율성 높음 (고비용 출력 구간 통제로 확실한 비용 세이브)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Synergy Tip -->
+            <div class="bg-lgred-500 text-white p-6 rounded-2xl space-y-2 mt-4">
+                <span class="text-xs font-bold uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded">The Ultimate Winner</span>
+                <h4 class="text-lg font-bold">가장 효율적인 골든 시너지 조합은?</h4>
+                <p class="text-sm text-white/90 leading-relaxed">
+                    두 선임의 장점을 합치는 것이 최선입니다. **A선임의 자잘한 질문 방식 대신 대규모 매뉴얼은 그대로 두어 기억을 유지(캐시 읽기 활성화)**시키면서, 동시에 **B선임처럼 AI의 불필요한 장문의 수식어 답변 출력을 꼼꼼하게 단속하는 것**이 한 달 누적 요금을 최대 80% 줄여내는 정답입니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION 3: 실천가이드 (Sequential Vertical Layout) -->
+        <section class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+            <div class="border-b border-gray-100 pb-5">
+                <span class="text-xs font-bold text-lgred-500 uppercase tracking-wider">Action Guide 03</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-1">오늘 당장 행동으로 옮기는 3대 토큰 다이어트 행동 수칙</h2>
+                <p class="text-sm text-gray-500">기획, 개발, 실무자 할 것 없이 업무에 즉시 대입할 수 있는 3가지 룰입니다.</p>
+            </div>
+
+            <!-- Vertical Rule Layout -->
+            <div class="space-y-6">
+                <!-- Rule 1 -->
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200/60 hover:border-lgred-200 transition-colors">
+                    <h4 class="font-extrabold text-gray-900 text-lg flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-lgred-500 text-white flex items-center justify-center font-bold text-sm">1</span>
+                        <span>변동 데이터는 가장 늦게 배치하기</span>
+                    </h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mt-3 pl-0 sm:pl-11">
+                        공통 템플릿의 시작 부분에 사용자 성함, 현재 시간, 오늘 날짜 같은 실시간 가변 데이터를 올리지 마세요. 지침을 완벽하게 재활용하여 대기 비용을 극단적으로 내릴 수 있도록 변동 요소들은 마지막 줄에 <code class="bg-gray-200/80 px-1.5 py-0.5 rounded text-xs font-mono text-lgred-600">[이 부분에 유저 정보를 기입하시오]</code> 형태로 깔끔히 정렬시켜두어야 합니다.
+                    </p>
+                </div>
+
+                <!-- Rule 2 -->
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200/60 hover:border-lgred-200 transition-colors">
+                    <h4 class="font-extrabold text-gray-900 text-lg flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-lgred-500 text-white flex items-center justify-center font-bold text-sm">2</span>
+                        <span>무색무취하고 정밀한 핵심 출력 유도하기</span>
+                    </h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mt-3 pl-0 sm:pl-11">
+                        출력 토큰은 입력보다 최대 5배 비싸다는 것을 상기합시다. 프롬프트 마지막 조항에 "존댓말이나 서론 생략하고 데이터 값만 간결히 출력해줘" 또는 "답변은 핵심만 30자 이내로 명확하게 제시해" 라는 꼬리 조항을 걸어두는 것만으로도, 불필요한 예산 낭비를 미연에 방지할 수 있습니다.
+                    </p>
+                </div>
+
+                <!-- Rule 3 -->
+                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200/60 hover:border-lgred-200 transition-colors">
+                    <h4 class="font-extrabold text-gray-900 text-lg flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-lg bg-lgred-500 text-white flex items-center justify-center font-bold text-sm">3</span>
+                        <span>필요 이상으로 긴 대화 세션은 즉시 청소하기</span>
+                    </h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mt-3 pl-0 sm:pl-11">
+                        하나의 대화방에서 계속 이야기하는 습관을 버리세요. 지나간 며칠 전 대화 내역까지 계속 AI 시스템이 한꺼번에 스캔하게 만드는 것은 불필요한 비용 축적의 원인입니다. 해결이 완료된 질문 세션은 과감히 대화방을 닫고, 새로운 목적에 맞는 깨끗한 대화창을 열어 작업을 처리하십시오.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: 근거 자료 및 출처 -->
+        <section class="bg-white p-8 sm:p-10 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+            <div class="border-b border-gray-100 pb-5">
+                <span class="text-xs font-bold text-lgred-500 uppercase tracking-wider">References 04</span>
+                <h2 class="text-2xl font-bold text-gray-900 mt-1">근거 및 레퍼런스 가이드라인 출처</h2>
+                <p class="text-sm text-gray-500">본 가이드는 업계를 선도하는 실제 AI 제작사의 엔지니어 아키텍처 공식 설명 문서에 전적으로 기반합니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- OpenAI Source -->
+                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100 space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <h4 class="font-bold text-gray-900 text-sm">OpenAI Developer Cookbook</h4>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        ChatGPT API에서는 1,024개 이상의 똑같은 토큰으로 접두사가 시작될 때 요금제 50% 반값 할인을 자동으로 계산해 저장 장치(Context Cache)에서 기억을 자동으로 빌드한다는 엔지니어 기본 가이드를 따랐습니다.
+                    </p>
+                </div>
+
+                <!-- Anthropic Source -->
+                <div class="p-5 bg-gray-50 rounded-xl border border-gray-100 space-y-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+                        <h4 class="font-bold text-gray-900 text-sm">Anthropic Claude Platform Specification</h4>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Claude는 고정 템플릿의 시작점을 영리하게 유지할 경우 <strong>입력 비용의 무려 90%를 할인</strong>해 주고, 시작점을 무효화시키면 그 혜택이 완전히 증발한다는 기술 상세 가이드를 바탕으로 제작되었습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12 border-t border-gray-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p class="text-sm">
+                본 웹페이지는 AI 사용 문화를 더 쉽고 간결하게 구축하기 위한 사내 공유용 가이드북입니다.
+            </p>
+            <p class="text-xs text-gray-600">
+                &copy; 2026 AI Token Workout Guide. LG Red Brand Theme applied successfully.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
