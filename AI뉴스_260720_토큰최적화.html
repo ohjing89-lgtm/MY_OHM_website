@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI 코딩 에이전트, 토큰 요금표만 보면 놓치는 것들</title>
+  <link rel="stylesheet" href="ax-news-design.css" />
+</head>
+<body>
+  <button class="print-btn" onclick="window.print()">인쇄</button>
+
+  <!-- ============================ PAGE 1 ============================ -->
+  <section class="page page-break">
+    <div class="top-line"></div>
+
+    <div class="issue-tag">📊 AX 뉴스 | 2026.07.20</div>
+    <div class="subtitle">💡 Claude Code·Codex 사용료가 매달 오른다면, 먼저 봐야 할 건 "얼마나 아꼈나"가 아니다</div>
+    <h1>AI 코딩 에이전트, 토큰 요금표만<br>보면 놓치는 것들</h1>
+
+    <div class="summary">
+      <strong>핵심 메시지</strong>
+      AI에게 일을 맡길 때 정말 따져야 할 건 <b>토큰을 얼마나 줄였는가가 아니라, 정해둔 품질 기준을 통과하는 결과물을 얼마나 더 싸고 빠르게 받아내는가</b>이다.
+    </div>
+
+    <!-- 01 -->
+    <div class="section">
+      <div class="section-title"><span class="num">01</span>청구서는 왜 이렇게 나오나 — 요금을 가르는 4개 항목</div>
+      <p>AI 사용료는 <b>토큰</b>(모델이 읽고 쓰는 텍스트의 단위) 수를 기준으로 매겨진다. 다만 토큰이라고 다 같은 값은 아니다. 성격이 다른 <b>네 가지가 섞여 있고, 단가도 크게 다르다.</b> 이 네 가지만 구분해도 아래 내용이 훨씬 쉽게 읽힌다.</p>
+
+      <table class="data">
+        <tr>
+          <th style="width:19%">항목</th>
+          <th style="width:56%">무엇인가</th>
+          <th style="width:25%">단가 감각 (100만 토큰당)</th>
+        </tr>
+        <tr>
+          <td><b>입력 토큰</b><span class="en">input</span></td>
+          <td>이번 요청에 새로 담아 보내는 텍스트 — 질문, 지시문, 함께 붙인 자료.</td>
+          <td class="hl">$5 · 보통</td>
+        </tr>
+        <tr>
+          <td><b>출력 토큰</b><span class="en">output</span></td>
+          <td>모델이 이번에 새로 만들어 돌려주는 텍스트 — 설명, 코드, 결과물 전체.</td>
+          <td class="hl">$25 · 가장 비쌈<br><span style="font-weight:400;color:#555">(입력의 5배)</span></td>
+        </tr>
+        <tr>
+          <td><b>캐시 쓰기</b><span class="en">cache write</span></td>
+          <td>지금까지 나눈 대화를 "임시 저장소"에 새로 올려두는 작업. 대화 앞부분이 바뀌면 이 저장 작업이 다시 일어난다.</td>
+          <td class="hl">$6.25 · 비쌈<br><span style="font-weight:400;color:#555">(캐시 읽기의 12.5배)</span></td>
+        </tr>
+        <tr>
+          <td><b>캐시 읽기</b><span class="en">cache read</span></td>
+          <td>저장소에 올려둔 이전 대화를 할인된 값으로 다시 불러와 참고하는 것.</td>
+          <td class="hl">$0.5 · 가장 쌈<br><span style="font-weight:400;color:#555">(입력의 1/10)</span></td>
+        </tr>
+      </table>
+
+      <div class="tip">
+        <strong>💡 구조상 꼭 짚어야 할 부분 —</strong> 모델은 새 질문마다 <b>쌓인 대화 전부를 처음부터 다시 훑는다</b>(대부분 캐시 읽기). 단가는 제일 낮지만 대화가 길수록 다시 읽는 양이 불어나 <b>결국 총 청구액을 좌우</b>한다. 실패해서 재시도하면 이 비용이 <b>실패 횟수만큼 겹쳐서</b> 청구된다.
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="section">
+      <div class="section-title"><span class="num">02</span>실제로 벌어지는 일</div>
+      <p>새 질문을 던질 때마다 AI는 그동안 쌓인 대화를 처음부터 다시 읽는다. 그래서 청구서의 대부분은 이 <b>"다시 읽기"</b> 값에서 나온다. 같은 도구를 쓰더라도 잔무까지 전부 상위 모델에 맡기는 쪽은 요금이 눈에 띄게 더 나오고, 자료 조사나 정리는 하위 모델로 돌리는 쪽은 같은 일을 하고도 훨씬 적게 낸다.</p>
+      <p>대화를 정리하지 않고 하루 종일 이어가면 그 대화 몇 개가 다시 읽기 요금의 대부분을 만들어내고, 반대로 업무 단위로 끊어 쓰면 같은 양을 처리해도 요금은 확 줄어든다. 지시를 구체적으로 미리 적어두면 재시도가 줄고, 그만큼 전체 토큰도 함께 줄어든다. 여러 AI를 동시에 굴리면 비용이 크게 뛰지만, <b>필요한 일만 나눠 맡기면</b> 오히려 더 아낄 수 있다.</p>
+    </div>
+
+    <!-- 03 -->
+    <div class="section">
+      <div class="section-title"><span class="num">03</span>성적표를 다시 써야 한다 — 봐야 할 네 가지</div>
+      <div class="grid-4" style="margin-top:1mm">
+        <div class="card">
+          <h3>① 통과율</h3>
+          <p>사람이 검토했을 때 <b>손대지 않고 그대로 받아들인 비율</b>. 높을수록 AI가 헛손질을 덜 했다는 뜻.</p>
+        </div>
+        <div class="card">
+          <h3>② 통과 1건당 비용</h3>
+          <p>실패·재시도 몫까지 더한 총비용 ÷ 통과 건수. <b>실제 성적표</b>는 이 숫자다.</p>
+        </div>
+        <div class="card">
+          <h3>③ 검토에 걸리는 시간</h3>
+          <p>AI 비용이 아무리 낮아도 <b>검토가 오래 걸리면 결국 손해</b>다.</p>
+        </div>
+        <div class="card">
+          <h3>④ 다시 시킨 횟수</h3>
+          <p>재시도 한 번마다 다시 읽는 비용이 통째로 붙는다. <b>비용이 새는 가장 큰 틈.</b></p>
+        </div>
+      </div>
+      <div class="bad" style="margin-top:2.5mm"><strong>따지지 말아야 할 질문</strong> — "이번 달 토큰을 몇 % 줄였나?" · 토큰이 20% 줄어도 통과율이 떨어지고 검토 시간이 늘면 오히려 손해</div>
+      <div class="good"><strong>따져야 할 질문</strong> — "기준을 통과한 결과물을 더 싸고 빠르게 받았는가?" <span style="font-weight:400">(예: 통과율 50%→80% · 1건당 $4.00→$3.00 · 검토 30분→15분 · 재시도 3회→1회 — 총 토큰이 늘어도 이건 성공)</span></div>
+    </div>
+
+    <div class="page-number">1 / 3</div>
+  </section>
+
+  <!-- ============================ PAGE 2 ============================ -->
+  <section class="page page-break">
+    <div class="top-line"></div>
+
+    <div class="issue-tag">📊 AX 뉴스 | 2026.07.20</div>
+    <h1 style="font-size:26pt;margin-bottom:3mm">이제 무엇을 바꾸면 될까</h1>
+
+    <!-- 04 -->
+    <div class="section">
+      <div class="section-title"><span class="num">04</span>그래서 뭘 바꾸면 되나 — 네 단계로 나눠보면</div>
+      <div class="grid-2 enlarge" style="margin-top:1mm;gap:4mm">
+        <div class="card">
+          <h3 style="color:var(--lg-red);font-size:14pt">1단계 · 맡기기 전 — 준비가 절반이다</h3>
+          <p><b>◾ 한 번에 다 시키지 않는다</b> — 통째로 말고 쪼갠 단위로. 실패해도 다시 시키는 비용이 작다.</p>
+          <p><b>◾ "끝났다"의 기준을 먼저 적어둔다</b> — 무엇이면 완성인지 처음부터 명시하면 재시도가 사라져 총비용↓.</p>
+          <p><b>◾ 큰 작업은 계획부터 보자고 한다</b> — 계획 → 승인 → 실행(plan mode). 완성 후 수정은 전체 재청구, 계획 단계 교정은 몇 줄로 끝난다. 지침만으로 작업 시간 약 29%↓.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color:var(--lg-red);font-size:14pt">2단계 · 진행하는 중 — 쌓여가는 대화를 방치 않기</h3>
+          <p><b>◾ 주제가 바뀌면 새 대화를 연다</b> — 한 창에서 잇지 않는다(<b>/clear</b>). 청구액의 약 96%가 다시 읽기 — <b>효과가 가장 큰 습관.</b></p>
+          <p><b>◾ 길어지는 작업은 중간에 요약한다</b> — <b>/compact</b>로 압축하면 이후 다시 읽기가 요약본 크기로. 외부 압축 도구는 오히려 비싼 저장 비용을 유발할 수 있어 내장 기능이 안전하다.</p>
+          <p><b>◾ 같은 방식으로 두세 번 실패하면 멈춘다</b> — 더 쪼개거나 지시를 바꾸거나 사람이 끼어든다. 재시도 한 번 = 대화 전체 다시 읽기 + 새 출력 청구.</p>
+        </div>
+
+        <div class="card">
+          <h3 style="color:var(--lg-red);font-size:14pt">3단계 · 맡길 대상 고르기 — 잔무까지 상위 모델 금지</h3>
+          <p><b>◾ 판단은 상위 모델, 잔무는 하위 모델</b> — 설계·최종 확인만 상위 모델, 조사·요약·정리는 하위 모델(<b>/model</b>). 같은 품질에서 비용 54~72%↓.</p>
+          <p><b>◾ 통째로 넘기지 말고 나눠서 넘긴다</b> — 전체를 맡기면 재작업 비용이 아낀 금액을 삼킨다(최대 7배). 버려도 되는 작은 조각만 하위 모델에, 계획·점검은 상위 모델/사람이. <b>차이는 모델이 아니라 맡긴 범위다.</b></p>
+        </div>
+
+        <div class="card">
+          <h3 style="color:var(--lg-red);font-size:14pt">4단계 · 팀 단위로는 — 한 번 정리해두면 계속 아낀다</h3>
+          <p><b>◾ 안내 문서는 짧게, 자주 손대지 않는다</b> — 자동으로 불려오는 규칙 파일(CLAUDE.md 등)엔 꼭 필요한 내용만. 자주 바뀌면 비싼 저장 비용 재발생. 실행 시간 28.6%↓, 출력 16.6%↓.</p>
+          <p><b>◾ 되풀이되는 절차는 재사용 문서(Skill)로 묶는다</b> — 언제·어떤 순서·확인 방법만 짧게. 매번 길게 설명할 필요가 없고 재시도도 준다.</p>
+          <p><b>◾ 성과는 네 가지 기준으로, 여러 번 재서 판단</b> — 실행마다 편차가 커서 한 번 재고 결론 내리지 않는다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="section">
+      <div class="section-title"><span class="num">05</span>결국 크기에 맞춰 다르게 쓰면 된다</div>
+      <table class="data compact">
+        <tr>
+          <th style="width:12%">일의 크기</th>
+          <th style="width:33%">예시</th>
+          <th style="width:55%">추천 방법</th>
+        </tr>
+        <tr>
+          <td class="hl">작은 일</td>
+          <td>오타 수정, 문구 변경, 항목 하나 추가</td>
+          <td>AI 하나에 짧고 명확한 지시. 계획·분업 같은 절차는 오히려 낭비.</td>
+        </tr>
+        <tr>
+          <td class="hl">중간 일</td>
+          <td>기능 하나 추가, 특정 화면 수정, 자료 정리</td>
+          <td>짧은 프로젝트 안내문 + 관련 Skill 활용. 자료 위치와 완료 기준을 지정.</td>
+        </tr>
+        <tr>
+          <td class="hl">큰 일</td>
+          <td>새 화면 전체, 구조 변경, 복잡한 오류 추적</td>
+          <td>계획 승인 → 작게 쪼개기 → 잔무는 하위 모델 → 검토는 상위 모델/사람 → 길면 중간 요약</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 06 -->
+    <div class="section">
+      <div class="section-title"><span class="num">06</span>특히 자주 걸리는 함정 세 가지</div>
+      <div class="risk">
+        <ul>
+          <li><strong>① 대화를 정리하지 않고 계속 쓴다</strong> — 서로 다른 업무를 한 창에서 이어가면 쌓인 대화 전체가 매번 다시 청구된다. → <b>주제가 바뀌면 /clear.</b></li>
+          <li><strong>② 잔무까지 최상위 모델에 맡긴다</strong> — 조사·정리 같은 단순 작업까지 제일 비싼 모델에게 시키면 같은 결과에 5~10배를 더 낸 셈. → <b>잔무는 하위 모델(/model)로.</b></li>
+          <li><strong>③ 완료 기준 없이 통째로 던지고 재시도만 반복한다</strong> — "다시 해줘"만 되풀이하면 매번 대화 전체를 다시 읽는 값이 붙는다. → <b>작게 쪼개고, 끝의 기준부터 정한다.</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="label">결국 잘 쓰는 사람은</div>
+      <div class="catch">토큰을 아끼는 사람이 아니라, 정해둔 기준을 통과한 결과물을 더 싸고 빠르게 받아내는 사람이 AI를 제대로 쓰는 사람이다.</div>
+    </div>
+
+    <div class="page-number">2 / 3</div>
+  </section>
+
+  <!-- ============================ PAGE 3 ============================ -->
+  <section class="page">
+    <div class="top-line"></div>
+
+    <div class="issue-tag">📊 AX 뉴스 | 2026.07.20</div>
+    <div class="subtitle">💡 고를 때 참고할 스냅샷 — 등급별 성능과 가격을 나란히 놓아봤다</div>
+    <h1 style="font-size:27pt">GPT · Gemini · Claude,<br>지금 무엇을 얼마에 쓸 수 있나 (2026.07 기준)</h1>
+
+    <div class="summary">
+      <strong>어떻게 보면 되나</strong>
+      세 회사 모두 <b>최고 성능형 · 실속형 · 저가형</b>을 함께 운영하는 중이다. 아래 표는 코딩 정확도와 에이전트 작업 능력을 가격과 나란히 놓은 것 — <b>점수 몇 점 차이보다 맡길 작업에 어느 등급이 맞는지가 훨씬 중요</b>하다.
+    </div>
+
+    <!-- 07 -->
+    <div class="section">
+      <div class="section-title"><span class="num">07</span>등급별 벤치마크 · 가격 비교</div>
+      <table class="data">
+        <tr>
+          <th style="width:11%">기업</th>
+          <th style="width:22%">모델 (등급)</th>
+          <th style="width:18%">코딩 정확도<br><span class="en">SWE-bench</span></th>
+          <th style="width:18%">에이전트 작업<br><span class="en">Terminal-Bench</span></th>
+          <th style="width:15%">입력 $/1M</th>
+          <th style="width:16%">출력 $/1M</th>
+        </tr>
+        <tr>
+          <td rowspan="3"><b>OpenAI</b></td>
+          <td><b>GPT-5.6 Sol</b><br><span class="en">최고 성능형 · 26.07.09</span></td>
+          <td>64.6% <span class="en">(Pro)</span></td>
+          <td>88.8% <span class="en">(2.1)</span></td>
+          <td>$5.00</td>
+          <td>$30.00</td>
+        </tr>
+        <tr>
+          <td><b>GPT-5.6 Terra</b><br><span class="en">실속형</span></td>
+          <td>63.4% <span class="en">(Pro)</span></td>
+          <td>87.4% <span class="en">(2.1)</span></td>
+          <td>$2.50</td>
+          <td>$15.00</td>
+        </tr>
+        <tr>
+          <td><b>GPT-5.6 Luna</b><br><span class="en">저가형</span></td>
+          <td>미발표</td>
+          <td>84.7% <span class="en">(2.1)</span></td>
+          <td>$1.00</td>
+          <td>$6.00</td>
+        </tr>
+        <tr>
+          <td rowspan="3"><b>Google</b></td>
+          <td><b>Gemini 3.1 Pro</b><br><span class="en">최고 성능형</span></td>
+          <td>80.6% <span class="en">(Verified)</span></td>
+          <td>68.5% <span class="en">(2.0)</span></td>
+          <td>$2.00</td>
+          <td>$12.00</td>
+        </tr>
+        <tr>
+          <td><b>Gemini 3.5 Flash</b><br><span class="en">실속형 · 26.05.19</span></td>
+          <td>55.1% <span class="en">(Pro)</span></td>
+          <td>76.2% <span class="en">(2.1)</span></td>
+          <td>$1.50</td>
+          <td>$9.00</td>
+        </tr>
+        <tr>
+          <td><b>Gemini 3.1 Flash-Lite</b><br><span class="en">저가형</span></td>
+          <td>미발표</td>
+          <td>미발표</td>
+          <td class="hl">$0.25</td>
+          <td class="hl">$1.50</td>
+        </tr>
+        <tr>
+          <td rowspan="3"><b>Anthropic</b></td>
+          <td><b>Claude Fable 5</b><br><span class="en">최상위(Mythos급)</span></td>
+          <td>95.0% <span class="en">(Verified)</span></td>
+          <td>미발표</td>
+          <td>$10.00</td>
+          <td>$50.00</td>
+        </tr>
+        <tr>
+          <td><b>Claude Opus 4.8</b><br><span class="en">최고 성능형</span></td>
+          <td>88.6% <span class="en">(Verified)</span></td>
+          <td>74.6% <span class="en">(2.1)</span></td>
+          <td>$5.00</td>
+          <td>$25.00</td>
+        </tr>
+        <tr>
+          <td><b>Claude Sonnet 5</b><br><span class="en">실속형 · 26.06.30</span></td>
+          <td>63.2% <span class="en">(Pro)</span></td>
+          <td>80.4% <span class="en">(2.1)</span></td>
+          <td>$3.00<span class="en">(9/1부터, 이전 $2)</span></td>
+          <td>$15.00<span class="en">(이전 $10)</span></td>
+        </tr>
+      </table>
+
+      <div class="tip">
+        <strong>💡 표 읽는 법 —</strong> <b>빨간 숫자는 각 가격 열에서 가장 저렴한 값</b>이라는 뜻, 그 외엔 색을 넣지 않았다. 벤치마크 점수는 강조하지 않은 이유가 있다 — SWE-bench는 <b>Verified/Pro 버전이 서로 달라</b> 직접 비교가 어렵고, Terminal-Bench도 회사마다 2.0/2.1 버전이 섞여 있어 그대로 나열만 했다(버전이 같은 항목끼리만 비교할 것). "미발표"는 해당 벤치마크 점수를 아직 공개하지 않았다는 뜻으로, 비공개 방침이 아니다. 참고로 2026.07.08 OpenAI 자체 감사에서 <b>SWE-bench Pro 과제의 약 30%에 결함</b>(과도하게 엄격한 채점, 불완전한 문제 설명)이 있다고 밝혀졌다 — 점수는 참고용으로만 보는 게 안전하다. 가격 역시 캐시 읽기가 적용되면 실제로는 입력가의 1/10 수준까지 내려간다(01 참고). 모델명과 가격은 몇 주 단위로 바뀌는 중이라, 발행 시점엔 각 사 공식 페이지로 다시 확인하는 걸 권한다.
+      </div>
+    </div>
+
+    <div class="principle">
+      <div class="label">결론</div>
+      <div class="catch">가격 차이는 최대 20배 가까이 벌어지지만 벤치마크 점수 차이는 그만큼 크지 않다<br>→ 점수 1등을 좇기보다 <b>03의 네 가지 기준</b>으로 내 작업에 실제로 맞는 등급을 재보고 고르는 편이 맞다</div>
+    </div>
+
+    <div class="page-number">3 / 3</div>
+  </section>
+</body>
+</html>
